@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -7,16 +7,17 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
-      --bg: #080b10;
-      --surface: rgba(18, 23, 34, 0.86);
-      --surface-2: rgba(27, 35, 51, 0.92);
+      --bg: #070a10;
+      --surface: rgba(16, 22, 34, 0.88);
+      --surface-2: rgba(24, 33, 50, 0.94);
       --gold: #ffb800;
-      --gold-2: #ff7700;
-      --gold-glow: rgba(255, 184, 0, 0.32);
+      --gold-2: #ff6b00;
+      --gold-glow: rgba(255, 184, 0, 0.34);
       --cyan: #00e5ff;
+      --purple: #a855f7;
       --green: #00e676;
       --red: #ff3b5c;
-      --text: #f5f7fb;
+      --text: #f5f7fc;
       --muted: #8b9bb4;
       --border: rgba(255, 255, 255, 0.09);
     }
@@ -30,56 +31,14 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% -10%, rgba(255, 184, 0, 0.14), transparent 45%), var(--bg);
+      background:
+        radial-gradient(circle at 15% -5%, rgba(255, 184, 0, 0.14), transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(0, 229, 255, 0.1), transparent 40%),
+        var(--bg);
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
-      padding-bottom: 92px;
-    }
-
-    /* Splash Screen */
-    #splash {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at center, #161d2b, #07090e 75%);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      transition: opacity 0.45s ease, visibility 0.45s ease;
-    }
-    #splash.hide {
-      opacity: 0;
-      visibility: hidden;
-    }
-    .splash-badge {
-      width: 68px;
-      height: 68px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-2));
-      color: #090b0f;
-      font-weight: 900;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 36px var(--gold-glow);
-      animation: pulseLogo 1.4s infinite ease-in-out;
-    }
-    @keyframes pulseLogo {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); }
-    }
-    .splash-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-    .splash-sub {
-      font-size: 12px;
-      color: var(--muted);
+      padding-bottom: 94px;
     }
 
     #bg-canvas {
@@ -91,75 +50,102 @@
       pointer-events: none;
     }
 
-    .app {
+    /* Splash */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #141c2c, #06080d 75%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    #splash.hide { opacity: 0; visibility: hidden; }
+    .splash-logo {
+      width: 72px; height: 72px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: #080a0f;
+      font-weight: 900;
+      font-size: 24px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 38px var(--gold-glow);
+      animation: pulse 1.3s infinite ease-in-out;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+
+    .container {
       position: relative;
       z-index: 1;
-      max-width: 460px;
+      max-width: 470px;
       margin: 0 auto;
-      padding: 14px 16px 20px;
+      padding: 12px 14px 20px;
     }
 
-    /* Header */
+    /* Top Bar */
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--surface);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 184, 0, 0.24);
+      border: 1px solid rgba(255, 184, 0, 0.25);
       border-radius: 18px;
-      padding: 12px 14px;
-      margin-bottom: 14px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-    }
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
+    .brand { display: flex; align-items: center; gap: 9px; }
+    .brand-icon {
+      width: 38px; height: 38px;
+      border-radius: 11px;
       background: linear-gradient(135deg, var(--gold), var(--gold-2));
-      color: #090b0f;
+      color: #080a0f;
       font-weight: 900;
-      font-size: 15px;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+    .brand-title { font-size: 14px; font-weight: 800; }
+    .brand-sub { font-size: 11px; color: var(--gold); font-weight: 700; }
+
+    .top-right { display: flex; align-items: center; gap: 8px; }
+
+    .lang-switch {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 18px var(--gold-glow);
+      background: rgba(8, 11, 18, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2px;
     }
-    .brand-name {
-      font-size: 15px;
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 10px;
       font-weight: 800;
-      line-height: 1.15;
+      padding: 4px 6px;
+      border-radius: 7px;
+      cursor: pointer;
     }
-    .brand-rate {
-      font-size: 11px;
-      color: var(--gold);
-      font-weight: 700;
-      margin-top: 2px;
+    .lang-btn.active {
+      background: var(--gold);
+      color: #080a0f;
     }
 
-    .balance-box {
-      background: rgba(255, 184, 0, 0.11);
+    .bal-chip {
+      background: rgba(255, 184, 0, 0.12);
       border: 1px solid rgba(255, 184, 0, 0.45);
-      border-radius: 13px;
-      padding: 7px 12px;
+      border-radius: 12px;
+      padding: 5px 10px;
       text-align: right;
     }
-    .balance-box small {
-      display: block;
-      font-size: 10px;
-      color: var(--muted);
-    }
-    .balance-box strong {
-      font-size: 15px;
-      color: var(--gold);
-      font-weight: 800;
-    }
+    .bal-chip small { display: block; font-size: 9px; color: var(--muted); }
+    .bal-chip strong { font-size: 14px; color: var(--gold); font-weight: 800; }
 
     /* Cards */
     .card {
@@ -167,22 +153,18 @@
       backdrop-filter: blur(14px);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
     }
-
     .card-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
     }
-    .card-title {
-      font-size: 15px;
-      font-weight: 800;
-    }
-    .pill-tag {
+    .card-title { font-size: 15px; font-weight: 800; }
+    .badge {
       font-size: 11px;
       font-weight: 700;
       padding: 4px 9px;
@@ -191,90 +173,127 @@
       color: var(--gold);
     }
 
-    /* Presets */
+    /* Home Hero & Stats */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(255, 184, 0, 0.2), rgba(255, 107, 0, 0.08) 55%, rgba(0, 229, 255, 0.12));
+      border: 1px solid rgba(255, 184, 0, 0.35);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner h2 { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+    .hero-banner p { font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 12px; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stat-box {
+      background: rgba(8, 11, 18, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .stat-box small { display: block; font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+    .stat-box strong { font-size: 14px; font-weight: 800; color: var(--text); }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* Banks selector */
+    .banks-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .bank-card {
+      background: rgba(8, 11, 18, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .bank-card.active {
+      border-color: var(--gold);
+      background: rgba(255, 184, 0, 0.14);
+      transform: translateY(-1px);
+    }
+    .bank-card .bank-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin: 0 auto 5px;
+    }
+    .bank-card span { font-size: 12px; font-weight: 800; display: block; }
+
+    .copy-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 10, 16, 0.92);
+      border: 1px solid rgba(255, 184, 0, 0.35);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .copy-box:active { transform: scale(0.99); }
+    .copy-box small { display: block; font-size: 11px; color: var(--muted); }
+    .copy-box strong { font-size: 15px; letter-spacing: 0.8px; color: var(--gold); }
+
+    /* Presets & Inputs */
     .presets {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 7px;
       margin-bottom: 12px;
     }
     .preset {
       background: var(--surface-2);
       border: 1px solid var(--border);
       color: var(--text);
-      border-radius: 12px;
-      padding: 9px 6px;
-      font-size: 13px;
-      font-weight: 700;
+      border-radius: 11px;
+      padding: 8px 4px;
+      font-size: 12px;
+      font-weight: 800;
       cursor: pointer;
-      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
-    }
-    .preset:active {
-      transform: scale(0.96);
     }
     .preset.active {
       background: linear-gradient(135deg, var(--gold), var(--gold-2));
-      color: #090b0f;
+      color: #080a0f;
       border-color: var(--gold);
     }
 
-    /* Inputs */
-    .field {
-      margin-bottom: 12px;
-    }
-    .field label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
+    .field { margin-bottom: 11px; }
+    .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
     .input {
       width: 100%;
-      background: rgba(8, 11, 17, 0.85);
+      background: rgba(7, 10, 16, 0.88);
       border: 1px solid var(--border);
       border-radius: 13px;
-      padding: 12px 14px;
+      padding: 11px 13px;
       color: var(--text);
       font-size: 15px;
       font-weight: 700;
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.14);
-    }
+    .input:focus { border-color: var(--gold); }
 
-    /* Destination switch */
-    .segmented {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .seg-btn {
-      background: rgba(8, 11, 17, 0.75);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      border-radius: 13px;
-      padding: 10px 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-    .seg-btn.active {
-      background: rgba(0, 229, 255, 0.13);
-      border-color: var(--cyan);
-      color: var(--cyan);
-    }
-
-    /* Summary box */
     .summary-box {
-      background: linear-gradient(145deg, rgba(255, 184, 0, 0.11), rgba(255, 119, 0, 0.05));
+      background: linear-gradient(145deg, rgba(255, 184, 0, 0.11), rgba(255, 107, 0, 0.05));
       border: 1px dashed rgba(255, 184, 0, 0.55);
-      border-radius: 15px;
-      padding: 12px 14px;
+      border-radius: 14px;
+      padding: 11px 13px;
       margin-bottom: 12px;
     }
     .summary-row {
@@ -282,351 +301,549 @@
       justify-content: space-between;
       align-items: center;
       font-size: 13px;
-      padding: 4px 0;
-    }
-    .val-uah {
-      color: var(--green);
-      font-weight: 800;
-      font-size: 17px;
-    }
-    .val-gold {
-      color: var(--gold);
-      font-weight: 800;
-      font-size: 17px;
-    }
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 6px;
-      line-height: 1.35;
-    }
-
-    /* Copy card */
-    .copy-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(8, 11, 17, 0.9);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: border-color 0.2s ease;
-    }
-    .copy-card:active {
-      border-color: var(--gold);
-    }
-    .copy-card small {
-      display: block;
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .copy-card strong {
-      font-size: 15px;
-      letter-spacing: 0.8px;
+      padding: 3px 0;
     }
 
     /* Buttons */
     .btn {
       width: 100%;
       border: none;
-      border-radius: 15px;
-      padding: 14px;
-      font-size: 15px;
+      border-radius: 14px;
+      padding: 13px;
+      font-size: 14px;
       font-weight: 800;
       cursor: pointer;
-      transition: transform 0.14s ease, opacity 0.2s ease;
+      transition: transform 0.12s ease, opacity 0.2s ease;
     }
-    .btn:active {
-      transform: scale(0.97);
-    }
-    .btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn-gold {
       background: linear-gradient(135deg, var(--gold), var(--gold-2));
-      color: #090b0f;
-      box-shadow: 0 8px 22px var(--gold-glow);
+      color: #080a0f;
+      box-shadow: 0 8px 20px var(--gold-glow);
     }
-    .btn-cashout {
-      background: linear-gradient(135deg, var(--green), #00b8d4);
-      color: #071014;
-      box-shadow: 0 8px 22px rgba(0, 230, 118, 0.3);
+    .btn-cyan {
+      background: linear-gradient(135deg, var(--cyan), #0091ea);
+      color: #051018;
+    }
+    .btn-green {
+      background: linear-gradient(135deg, var(--green), #00bfa5);
+      color: #05140e;
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
     }
 
-    /* Rocket arena */
+    /* Games Hub & Rocket */
+    .game-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .game-tile {
+      background: rgba(8, 11, 18, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 12px;
+      cursor: pointer;
+      position: relative;
+    }
+    .game-tile.active {
+      border-color: var(--cyan);
+      background: linear-gradient(145deg, rgba(0, 229, 255, 0.14), rgba(168, 85, 247, 0.08));
+    }
+    .game-tile.locked { opacity: 0.65; }
+    .game-tile h4 { font-size: 14px; font-weight: 800; margin-top: 4px; }
+    .game-tile p { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .history-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+    }
+    .mult-pill {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      white-space: nowrap;
+    }
+    .mult-pill.high { color: var(--green); background: rgba(0, 230, 118, 0.14); }
+    .mult-pill.mid { color: var(--cyan); background: rgba(0, 229, 255, 0.14); }
+    .mult-pill.low { color: var(--red); background: rgba(255, 59, 92, 0.14); }
+
     .arena {
       position: relative;
       width: 100%;
-      height: 235px;
+      height: 245px;
       border-radius: 16px;
       overflow: hidden;
-      background: radial-gradient(circle at 15% 88%, rgba(0, 229, 255, 0.16), #090d16 70%);
-      border: 1px solid rgba(0, 229, 255, 0.25);
+      background: radial-gradient(circle at 15% 88%, rgba(0, 229, 255, 0.18), #080c15 72%);
+      border: 1px solid rgba(0, 229, 255, 0.28);
       margin-bottom: 12px;
     }
-    #rocket-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    .mult-display {
+    #rocket-canvas { width: 100%; height: 100%; display: block; }
+    .mult-center {
       position: absolute;
-      top: 46%;
-      left: 50%;
+      top: 44%; left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 40px;
+      font-size: 42px;
       font-weight: 900;
-      color: #ffffff;
-      text-shadow: 0 0 24px rgba(0, 229, 255, 0.55);
+      text-shadow: 0 0 26px rgba(0, 229, 255, 0.6);
       pointer-events: none;
     }
-    .arena-msg {
+    .arena-sub {
       position: absolute;
-      bottom: 10px;
-      left: 10px;
-      right: 10px;
+      bottom: 10px; left: 10px; right: 10px;
       text-align: center;
       font-size: 12px;
       color: var(--muted);
       pointer-events: none;
     }
 
-    /* Orders list */
-    .order-card {
-      background: rgba(8, 11, 17, 0.72);
+    .bet-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .mini-btns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .mini-btn {
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border);
-      border-left: 4px solid var(--gold);
-      border-radius: 13px;
-      padding: 11px 12px;
-      margin-bottom: 9px;
-    }
-    .order-card.completed { border-left-color: var(--green); }
-    .order-card.rejected { border-left-color: var(--red); }
-    .order-top {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 700;
-    }
-    .order-sub {
+      color: var(--text);
+      border-radius: 8px;
+      padding: 5px 2px;
       font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    /* Bottom navigation */
+    /* Bonuses */
+    .bonus-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: rgba(8, 11, 18, 0.78);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .bonus-info h4 { font-size: 14px; font-weight: 800; }
+    .bonus-info p { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .bonus-reward {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gold);
+      background: rgba(255, 184, 0, 0.14);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .bonus-action { min-width: 112px; }
+
+    .ref-link-box {
+      background: rgba(8, 11, 18, 0.9);
+      border: 1px dashed rgba(0, 229, 255, 0.45);
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 12px;
+      color: var(--cyan);
+      word-break: break-all;
+      margin: 8px 0;
+    }
+
+    /* Orders */
+    .order-item {
+      background: rgba(8, 11, 18, 0.75);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+    .order-item.completed { border-left-color: var(--green); }
+    .order-item.rejected { border-left-color: var(--red); }
+
+    /* Bottom Nav (5 tabs) */
     .nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(11, 15, 23, 0.94);
+      bottom: 0; left: 0; right: 0;
+      background: rgba(10, 14, 22, 0.96);
       backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-around;
-      padding: 9px 8px calc(10px + env(safe-area-inset-bottom));
-      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 7px 4px calc(9px + env(safe-area-inset-bottom));
+      z-index: 30;
     }
     .nav-btn {
       background: none;
       border: none;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 3px;
       cursor: pointer;
-      padding: 4px 14px;
-      border-radius: 12px;
-      transition: color 0.15s ease, background 0.15s ease;
+      padding: 4px 2px;
+      border-radius: 10px;
     }
-    .nav-btn span { font-size: 19px; }
+    .nav-btn span.ico { font-size: 18px; }
     .nav-btn.active {
       color: var(--gold);
-      background: rgba(255, 184, 0, 0.09);
+      background: rgba(255, 184, 0, 0.1);
     }
 
-    .page { display: none; animation: pageIn 0.22s ease; }
+    .page { display: none; animation: fadeUp 0.22s ease; }
     .page.active { display: block; }
-    @keyframes pageIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
   </style>
 </head>
 <body>
 
 <div id="splash">
-  <div class="splash-badge">M1S</div>
-  <div class="splash-title">MONL1S GOLD STORE</div>
-  <div class="splash-sub">Standoff 2 • 100 G = 35 грн</div>
+  <div class="splash-logo">M1S</div>
+  <div style="font-size: 19px; font-weight: 900; letter-spacing: 1px;">MONL1S GOLD STORE</div>
+  <div style="font-size: 12px; color: var(--muted);">Standoff 2 • 100 G = 35 грн</div>
 </div>
 
 <canvas id="bg-canvas"></canvas>
 
-<div class="app">
+<div class="container">
+  <!-- TOPBAR -->
   <header class="topbar">
     <div class="brand">
-      <div class="brand-logo">SO2</div>
+      <div class="brand-icon">SO2</div>
       <div>
-        <div class="brand-name">Monl1s Gold Store</div>
-        <div class="brand-rate">Курс: 100 G = 35 грн</div>
+        <div class="brand-title">Monl1s Gold</div>
+        <div class="brand-sub">100 G = 35 грн</div>
       </div>
     </div>
-    <div class="balance-box">
-      <small>Баланс</small>
-      <strong id="balance-text">0.00 G</strong>
+    <div class="top-right">
+      <div class="lang-switch">
+        <button type="button" class="lang-btn active" onclick="setLang('ru', this)">RU</button>
+        <button type="button" class="lang-btn" onclick="setLang('uk', this)">UK</button>
+        <button type="button" class="lang-btn" onclick="setLang('en', this)">EN</button>
+      </div>
+      <div class="bal-chip">
+        <small data-i18n="balance_lbl">Баланс</small>
+        <strong id="balance-display">0.00 G</strong>
+      </div>
     </div>
   </header>
 
-  <!-- МАГАЗИН -->
-  <section id="page-shop" class="page active">
+  <!-- 1. ГЛАВНАЯ -->
+  <section id="page-home" class="page active">
+    <div class="hero-banner">
+      <h2 data-i18n="hero_title">Добро пожаловать в Monl1s Store!</h2>
+      <p data-i18n="hero_desc">Покупай голду по выгодному курсу, забирай ежедневные бонусы, умножай баланс в играх и выводи голду прямо в Standoff 2.</p>
+      <div class="quick-actions">
+        <button type="button" class="btn btn-gold" onclick="switchTab('deposit')" data-i18n="btn_go_deposit">💳 Пополнить G</button>
+        <button type="button" class="btn btn-cyan" onclick="switchTab('games')" data-i18n="btn_go_games">🎮 Играть в Ракетку</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box">
+        <small data-i18n="stat_bal">На балансе</small>
+        <strong id="stat-balance" style="color: var(--gold);">0.00 G</strong>
+      </div>
+      <div class="stat-box">
+        <small data-i18n="stat_dep">Пополнено</small>
+        <strong id="stat-deposited">0 G</strong>
+      </div>
+      <div class="stat-box">
+        <small data-i18n="stat_refs">Рефералов</small>
+        <strong id="stat-refs" style="color: var(--cyan);">0</strong>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-head">
-        <div class="card-title">💎 Калькулятор голди</div>
-        <div class="pill-tag">Комісія ринку 20%</div>
+        <div class="card-title" data-i18n="how_title">⚡ Как всё работает</div>
+        <div class="badge">24/7</div>
+      </div>
+      <div style="font-size: 12px; color: #cbd5e1; line-height: 1.55;" data-i18n="how_steps">
+        1. Пополни баланс через удобную карту (Mono, А-Банк или ПриватБанк) от <b>100 G</b>.<br>
+        2. После проверки чека голда поступает на твой баланс в приложении.<br>
+        3. Забирай бонусы или умножай голду в разделе <b>«Игры»</b>.<br>
+        4. Выводи от <b>100 G</b> в Standoff 2 — мы покрываем комиссию рынка 20%!
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. ПОПОЛНЕНИЕ -->
+  <section id="page-deposit" class="page">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title" data-i18n="dep_title">💳 Пополнение баланса</div>
+        <div class="badge" data-i18n="min_100">Мин. 100 G</div>
       </div>
 
       <div class="presets">
-        <button type="button" class="preset active" onclick="pickAmount(100, this)">100 G</button>
-        <button type="button" class="preset" onclick="pickAmount(250, this)">250 G</button>
-        <button type="button" class="preset" onclick="pickAmount(500, this)">500 G</button>
-        <button type="button" class="preset" onclick="pickAmount(1000, this)">1000 G</button>
+        <button type="button" class="preset active" onclick="setDepAmount(100, this)">100 G</button>
+        <button type="button" class="preset" onclick="setDepAmount(250, this)">250 G</button>
+        <button type="button" class="preset" onclick="setDepAmount(500, this)">500 G</button>
+        <button type="button" class="preset" onclick="setDepAmount(1000, this)">1000 G</button>
       </div>
 
       <div class="field">
-        <label for="gold-amount">Бажана кількість голди (чистими, мін. 20 G):</label>
-        <input type="number" id="gold-amount" class="input" value="100" min="20" oninput="recalcShop()" />
-      </div>
-
-      <div class="segmented">
-        <button type="button" class="seg-btn active" id="dest-market" onclick="setDestination('market')">🔫 На ринок Standoff 2</button>
-        <button type="button" class="seg-btn" id="dest-balance" onclick="setDestination('balance')">🚀 На баланс в Ракетку</button>
+        <label data-i18n="dep_amount_lbl">Количество голды для пополнения (мин. 100 G):</label>
+        <input type="number" id="dep-gold" class="input" value="100" min="100" oninput="recalcDeposit()" />
       </div>
 
       <div class="summary-box">
         <div class="summary-row">
-          <span>До оплати:</span>
-          <span class="val-uah" id="pay-uah">35.00 грн</span>
+          <span data-i18n="to_pay_lbl">Сумма к переводу:</span>
+          <strong id="dep-uah" style="color: var(--green); font-size: 17px;">35.00 грн</strong>
         </div>
-        <div class="summary-row" id="market-price-row">
-          <span>Виставити скін за:</span>
-          <span class="val-gold" id="market-price">125.24 G</span>
-        </div>
-        <div class="hint" id="match-note">
-          Унікальні копійки допомагають точно знайти ваш лот на ринку серед інших виставлених скінів.
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title">💳 Оплата та заявка</div>
-      </div>
-
-      <div class="copy-card" onclick="copyCardNumber()">
-        <div>
-          <small>Картка для оплати (натисни, щоб скопіювати)</small>
-          <strong id="card-value">4441 1144 5566 7788</strong>
-        </div>
-        <span>📋</span>
-      </div>
-
-      <div id="market-inputs">
-        <div class="field">
-          <label for="skin-name">Назва вашого скіна на ринку:</label>
-          <input type="text" id="skin-name" class="input" placeholder="Наприклад: AWM Sport" />
-        </div>
-        <div class="field">
-          <label for="skin-photo">Скріншот виставленого скіна:</label>
-          <input type="file" id="skin-photo" accept="image/*" class="input" style="font-size: 12px; padding: 9px;" />
+        <div class="summary-row">
+          <span data-i18n="credit_to_lbl">Зачисление:</span>
+          <strong style="color: var(--gold); font-size: 13px;" data-i18n="to_app_bal">На баланс приложения</strong>
         </div>
       </div>
 
       <div class="field">
-        <label for="receipt-photo">Скріншот квитанції про оплату:</label>
-        <input type="file" id="receipt-photo" accept="image/*" class="input" style="font-size: 12px; padding: 9px;" />
+        <label data-i18n="choose_bank_lbl">Выберите банк для перевода:</label>
+        <div class="banks-grid">
+          <div class="bank-card active" onclick="selectBank('Mono', this)">
+            <div class="bank-dot" style="background: #ffffff;"></div>
+            <span>Monobank</span>
+          </div>
+          <div class="bank-card" onclick="selectBank('А-Банк', this)">
+            <div class="bank-dot" style="background: #00e676;"></div>
+            <span>А-Банк</span>
+          </div>
+          <div class="bank-card" onclick="selectBank('ПриватБанк', this)">
+            <div class="bank-dot" style="background: #76ff03;"></div>
+            <span>ПриватБанк</span>
+          </div>
+        </div>
       </div>
 
-      <button type="button" class="btn btn-gold" id="order-btn" onclick="sendOrder()">✅ Надіслати заявку</button>
+      <div class="copy-box" onclick="copySelectedCard()">
+        <div>
+          <small id="selected-bank-name">Monobank (нажмите, чтобы скопировать)</small>
+          <strong id="selected-card-num">4441 1110 6828 4243</strong>
+        </div>
+        <span style="font-size: 18px;">📋</span>
+      </div>
+
+      <div class="field">
+        <label data-i18n="receipt_lbl">Скриншот квитанции об оплате:</label>
+        <input type="file" id="dep-receipt" accept="image/*" class="input" style="font-size: 12px; padding: 9px;" />
+      </div>
+
+      <button type="button" class="btn btn-gold" id="dep-submit-btn" onclick="submitDeposit()" data-i18n="dep_btn">✅ Я оплатил, отправить заявку</button>
     </div>
   </section>
 
-  <!-- РАКЕТКА -->
-  <section id="page-rocket" class="page">
+  <!-- 3. ИГРЫ -->
+  <section id="page-games" class="page">
+    <div class="game-selector">
+      <div class="game-tile active">
+        <span style="font-size: 20px;">🚀</span>
+        <h4 data-i18n="game_rocket_name">Ракетка</h4>
+        <p data-i18n="game_rocket_desc">Множитель до x30.00</p>
+      </div>
+      <div class="game-tile locked" onclick="notify(t('game_soon_msg'))">
+        <span style="font-size: 20px;">🎰</span>
+        <h4 data-i18n="game_soon_name">Скоро...</h4>
+        <p data-i18n="game_soon_desc">Новая мини-игра в разработке</p>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-head">
-        <div class="card-title">🚀 Ракетка</div>
-        <div class="pill-tag" style="color: var(--cyan); background: rgba(0, 229, 255, 0.12);">До x25.00</div>
+        <div class="card-title">🚀 <span data-i18n="game_rocket_name">Ракетка</span></div>
+        <div class="badge" style="color: var(--cyan); background: rgba(0, 229, 255, 0.14);">LIVE</div>
+      </div>
+
+      <div class="history-strip" id="crash-history">
+        <span class="mult-pill high">4.12x</span>
+        <span class="mult-pill low">1.14x</span>
+        <span class="mult-pill mid">2.35x</span>
+        <span class="mult-pill high">8.90x</span>
+        <span class="mult-pill mid">1.88x</span>
       </div>
 
       <div class="arena">
         <canvas id="rocket-canvas"></canvas>
-        <div class="mult-display" id="mult-text">1.00x</div>
-        <div class="arena-msg" id="arena-msg">Вкажи ставку та запускай ракету</div>
+        <div class="mult-center" id="mult-display">1.00x</div>
+        <div class="arena-sub" id="rocket-hint" data-i18n="rocket_ready">Сделайте ставку и запустите ракету</div>
       </div>
 
-      <div class="field">
-        <label for="bet-input">Ставка (голда, мін. 1 G):</label>
-        <input type="number" id="bet-input" class="input" value="10" min="1" step="1" />
+      <div class="bet-controls">
+        <div class="field" style="margin-bottom: 0;">
+          <label data-i18n="bet_lbl">Ставка (G):</label>
+          <input type="number" id="rocket-bet" class="input" value="10" min="1" />
+          <div class="mini-btns">
+            <button type="button" class="mini-btn" onclick="modBet('half')">1/2</button>
+            <button type="button" class="mini-btn" onclick="modBet('double')">x2</button>
+            <button type="button" class="mini-btn" onclick="modBet('plus10')">+10</button>
+            <button type="button" class="mini-btn" onclick="modBet('max')">MAX</button>
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom: 0;">
+          <label data-i18n="autocash_lbl">Авто-стоп (x):</label>
+          <input type="number" id="rocket-auto" class="input" placeholder="2.00" step="0.1" min="1.1" />
+          <div class="mini-btns">
+            <button type="button" class="mini-btn" onclick="setAuto(1.5)">1.5x</button>
+            <button type="button" class="mini-btn" onclick="setAuto(2.0)">2.0x</button>
+            <button type="button" class="mini-btn" onclick="setAuto(5.0)">5.0x</button>
+            <button type="button" class="mini-btn" onclick="setAuto('')">OFF</button>
+          </div>
+        </div>
       </div>
 
-      <button type="button" class="btn btn-gold" id="rocket-action-btn" onclick="onRocketClick()">🔥 ЗАПУСТИТИ</button>
+      <button type="button" class="btn btn-gold" id="rocket-btn" onclick="toggleRocket()" data-i18n="rocket_start">🔥 ЗАПУСТИТЬ РАКЕТКУ</button>
     </div>
   </section>
 
-  <!-- ЗАЯВКИ ТА ВИВІД -->
-  <section id="page-orders" class="page">
+  <!-- 4. БОНУСЫ И РЕФЕРАЛКА -->
+  <section id="page-bonuses" class="page">
     <div class="card">
       <div class="card-head">
-        <div class="card-title">📤 Вивід голди на ринок</div>
+        <div class="card-title" data-i18n="bonuses_title">🎁 Ежедневные и стартовые бонусы</div>
       </div>
-      <div class="field">
-        <label for="wd-amount">Сума виводу з балансу (мін. 20 G):</label>
-        <input type="number" id="wd-amount" class="input" value="20" min="20" oninput="recalcWithdraw()" />
-      </div>
-      <div class="summary-box">
-        <div class="summary-row">
-          <span>Виставити скін за:</span>
-          <span class="val-gold" id="wd-market-price">25.24 G</span>
+
+      <!-- Бонус 24 часа -->
+      <div class="bonus-item">
+        <div class="bonus-info">
+          <h4 data-i18n="daily_title">Ежедневный бонус</h4>
+          <p data-i18n="daily_desc">Забирай бесплатную голду каждые 24 часа</p>
+          <span class="bonus-reward">+5 G / 24ч</span>
+        </div>
+        <div class="bonus-action">
+          <button type="button" class="btn btn-gold" id="daily-btn" onclick="claimDaily()" style="padding: 10px 8px; font-size: 12px;" data-i18n="claim_btn">Забрать</button>
         </div>
       </div>
-      <div class="field">
-        <label for="wd-skin">Назва скіна на ринку:</label>
-        <input type="text" id="wd-skin" class="input" placeholder="Наприклад: USP Genesis" />
+
+      <!-- Бонус за подписку на канал -->
+      <div class="bonus-item">
+        <div class="bonus-info">
+          <h4 data-i18n="sub_title">Подписка на канал</h4>
+          <p data-i18n="sub_desc">Подпишись на наш Telegram-канал и получи награду</p>
+          <span class="bonus-reward">+15 G</span>
+        </div>
+        <div class="bonus-action" style="display: flex; flex-direction: column; gap: 5px;">
+          <button type="button" class="btn btn-outline" onclick="openChannel()" style="padding: 7px; font-size: 11px;" data-i18n="go_channel_btn">Перейти</button>
+          <button type="button" class="btn btn-cyan" id="sub-btn" onclick="claimChannel()" style="padding: 8px; font-size: 11px;" data-i18n="check_sub_btn">Проверить</button>
+        </div>
       </div>
-      <button type="button" class="btn btn-gold" onclick="sendWithdraw()">💎 Замовити вивід</button>
+    </div>
+
+    <!-- Реферальная программа -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title" data-i18n="ref_title">👥 Реферальная программа</div>
+        <div class="badge">+15 G</div>
+      </div>
+      <p style="font-size: 12px; color: #cbd5e1; line-height: 1.45;" data-i18n="ref_desc">
+        Приглашай друзей по своей персональной ссылке! За каждого нового игрока, который запустит бота по твоей ссылке, ты мгновенно получаешь <b>15 G</b> на баланс.
+      </p>
+
+      <div class="ref-link-box" id="ref-link-text">https://t.me/so2_gold_market_bot?start=ref_...</div>
+
+      <div class="stats-grid" style="grid-template-columns: 1fr 1fr; margin-top: 8px;">
+        <div class="stat-box">
+          <small data-i18n="ref_invited_lbl">Приглашено друзей</small>
+          <strong id="ref-count-box">0</strong>
+        </div>
+        <div class="stat-box">
+          <small data-i18n="ref_earned_lbl">Заработано с рефералов</small>
+          <strong id="ref-earned-box" style="color: var(--gold);">0 G</strong>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-gold" onclick="copyRefLink()" data-i18n="copy_ref_btn">🔗 Скопировать реферальную ссылку</button>
+    </div>
+  </section>
+
+  <!-- 5. ВЫВОД В STANDOFF 2 -->
+  <section id="page-withdraw" class="page">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title" data-i18n="wd_title">📤 Вывод голды в Standoff 2</div>
+        <div class="badge" data-i18n="min_100">Мин. 100 G</div>
+      </div>
+
+      <div class="field">
+        <label data-i18n="wd_amount_lbl">Сколько вывести с баланса (мин. 100 G):</label>
+        <input type="number" id="wd-gold" class="input" value="100" min="100" oninput="recalcWithdraw()" />
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row">
+          <span data-i18n="wd_skin_price_lbl">Выставить скин на рынке за:</span>
+          <strong id="wd-market-price" style="color: var(--gold); font-size: 17px;">125.34 G</strong>
+        </div>
+        <div style="font-size: 11px; color: var(--muted); margin-top: 4px;" data-i18n="wd_fee_note">
+          Комиссия рынка 20% уже включена, а уникальные копійки помогут быстро найти именно ваш скин.
+        </div>
+      </div>
+
+      <div class="field">
+        <label data-i18n="wd_skin_name_lbl">Название вашего скина на рынке:</label>
+        <input type="text" id="wd-skin-name" class="input" placeholder="Например: M40 Pro / AWM Sport" />
+      </div>
+
+      <div class="field">
+        <label data-i18n="wd_skin_photo_lbl">Скриншот выставленного скина на рынке:</label>
+        <input type="file" id="wd-skin-photo" accept="image/*" class="input" style="font-size: 12px; padding: 9px;" />
+      </div>
+
+      <button type="button" class="btn btn-gold" id="wd-submit-btn" onclick="submitWithdraw()" data-i18n="wd_btn">💎 Заказать вывод в Standoff 2</button>
     </div>
 
     <div class="card">
       <div class="card-head">
-        <div class="card-title">📜 Мої заявки</div>
+        <div class="card-title" data-i18n="history_title">📜 История заявок (вход и вывод)</div>
       </div>
-      <div id="orders-container">
-        <div class="hint">Завантаження історії...</div>
-      </div>
+      <div id="orders-list"><div style="font-size: 12px; color: var(--muted);">Загрузка...</div></div>
     </div>
   </section>
 </div>
 
+<!-- 5 ВКЛАДОК ВНИЗУ -->
 <nav class="nav">
-  <button type="button" class="nav-btn active" onclick="openPage('shop', this)">
-    <span>💎</span>
-    <span>Магазин</span>
+  <button type="button" class="nav-btn active" id="tab-home" onclick="switchTab('home')">
+    <span class="ico">🏠</span>
+    <span data-i18n="nav_home">Главная</span>
   </button>
-  <button type="button" class="nav-btn" onclick="openPage('rocket', this)">
-    <span>🚀</span>
-    <span>Ракетка</span>
+  <button type="button" class="nav-btn" id="tab-deposit" onclick="switchTab('deposit')">
+    <span class="ico">💳</span>
+    <span data-i18n="nav_dep">Пополнить</span>
   </button>
-  <button type="button" class="nav-btn" onclick="openPage('orders', this)">
-    <span>📦</span>
-    <span>Заявки</span>
+  <button type="button" class="nav-btn" id="tab-games" onclick="switchTab('games')">
+    <span class="ico">🎮</span>
+    <span data-i18n="nav_games">Игры</span>
+  </button>
+  <button type="button" class="nav-btn" id="tab-bonuses" onclick="switchTab('bonuses')">
+    <span class="ico">🎁</span>
+    <span data-i18n="nav_bonus">Бонусы</span>
+  </button>
+  <button type="button" class="nav-btn" id="tab-withdraw" onclick="switchTab('withdraw')">
+    <span class="ico">📤</span>
+    <span data-i18n="nav_wd">Вывод</span>
   </button>
 </nav>
 
@@ -634,36 +851,217 @@
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.expand();
-    tg.setHeaderColor('#080b10');
-    tg.setBackgroundColor('#080b10');
+    tg.setHeaderColor('#070a10');
+    tg.setBackgroundColor('#070a10');
   }
 
-  // Зміни на URL свого бекенду, коли викладеш на хостинг (наприклад, https://your-app.onrender.com)
+  // ВКАЖИ ТУТ URL СВОГО БЕКЕНДА НА RENDER АБО LOCALHOST
   const API_URL = 'http://localhost:3000';
-  const RATE_PER_100 = 35;
-  const MARKET_FEE = 0.8;
 
-  const tgUser = tg?.initDataUnsafe?.user || {
-    id: 5224967757,
-    username: 'yternaft',
-    first_name: 'Illia'
+  const BANKS = {
+    'Mono': '4441 1110 6828 4243',
+    'А-Банк': '4323 3473 6276 0313',
+    'ПриватБанк': '5168 7520 2609 4774'
   };
 
-  let balance = 0;
-  let destination = 'market';
+  const I18N = {
+    ru: {
+      balance_lbl: 'Баланс',
+      hero_title: 'Добро пожаловать в Monl1s Store!',
+      hero_desc: 'Покупай голду по выгодному курсу, забирай ежедневные бонусы, умножай баланс в играх и выводи голду прямо в Standoff 2.',
+      btn_go_deposit: '💳 Пополнить G',
+      btn_go_games: '🎮 Играть в Ракетку',
+      stat_bal: 'На балансе',
+      stat_dep: 'Пополнено',
+      stat_refs: 'Рефералов',
+      how_title: '⚡ Как всё работает',
+      how_steps: '1. Пополни баланс через удобную карту (Mono, А-Банк или ПриватБанк) от <b>100 G</b>.<br>2. После проверки чека голда поступает на твой баланс в приложении.<br>3. Забирай бонусы или умножай голду в разделе <b>«Игры»</b>.<br>4. Выводи от <b>100 G</b> в Standoff 2 — мы покрываем комиссию рынка 20%!',
+      dep_title: '💳 Пополнение баланса',
+      min_100: 'Мин. 100 G',
+      dep_amount_lbl: 'Количество голды для пополнения (мин. 100 G):',
+      to_pay_lbl: 'Сумма к переводу:',
+      credit_to_lbl: 'Зачисление:',
+      to_app_bal: 'На баланс приложения',
+      choose_bank_lbl: 'Выберите банк для перевода:',
+      receipt_lbl: 'Скриншот квитанции об оплате:',
+      dep_btn: '✅ Я оплатил, отправить заявку',
+      game_rocket_name: 'Ракетка',
+      game_rocket_desc: 'Множитель до x30.00',
+      game_soon_name: 'Скоро...',
+      game_soon_desc: 'Новая мини-игра в разработке',
+      game_soon_msg: 'Новая игра появится в следующем обновлении!',
+      rocket_ready: 'Сделайте ставку и запустите ракету',
+      bet_lbl: 'Ставка (G):',
+      autocash_lbl: 'Авто-стоп (x):',
+      rocket_start: '🔥 ЗАПУСТИТЬ РАКЕТКУ',
+      bonuses_title: '🎁 Ежедневные и стартовые бонусы',
+      daily_title: 'Ежедневный бонус',
+      daily_desc: 'Забирай бесплатную голду каждые 24 часа',
+      claim_btn: 'Забрать',
+      sub_title: 'Подписка на канал',
+      sub_desc: 'Подпишись на наш Telegram-канал и получи награду',
+      go_channel_btn: 'Перейти',
+      check_sub_btn: 'Проверить',
+      ref_title: '👥 Реферальная программа',
+      ref_desc: 'Приглашай друзей по своей персональной ссылке! За каждого нового игрока, который запустит бота по твоей ссылке, ты мгновенно получаешь <b>15 G</b> на баланс.',
+      ref_invited_lbl: 'Приглашено друзей',
+      ref_earned_lbl: 'Заработано с рефералов',
+      copy_ref_btn: '🔗 Скопировать реферальную ссылку',
+      wd_title: '📤 Вывод голды в Standoff 2',
+      wd_amount_lbl: 'Сколько вывести с баланса (мин. 100 G):',
+      wd_skin_price_lbl: 'Выставить скин на рынке за:',
+      wd_fee_note: 'Комиссия рынка 20% уже включена, а уникальные копейки помогут быстро найти именно ваш скин.',
+      wd_skin_name_lbl: 'Название вашего скина на рынке:',
+      wd_skin_photo_lbl: 'Скриншот выставленного скина на рынке:',
+      wd_btn: '💎 Заказать вывод в Standoff 2',
+      history_title: '📜 История заявок (вход и вывод)',
+      nav_home: 'Главная',
+      nav_dep: 'Пополнить',
+      nav_games: 'Игры',
+      nav_bonus: 'Бонусы',
+      nav_wd: 'Вывод'
+    },
+    uk: {
+      balance_lbl: 'Баланс',
+      hero_title: 'Ласкаво просимо в Monl1s Store!',
+      hero_desc: 'Купуй голду за вигідним курсом, забирай щоденні бонуси, примножуй баланс в іграх та виводь голду прямо в Standoff 2.',
+      btn_go_deposit: '💳 Поповнити G',
+      btn_go_games: '🎮 Грати в Ракетку',
+      stat_bal: 'На балансі',
+      stat_dep: 'Поповнено',
+      stat_refs: 'Рефералів',
+      how_title: '⚡ Як усе працює',
+      how_steps: '1. Поповни баланс через зручну картку (Mono, А-Банк або ПриватБанк) від <b>100 G</b>.<br>2. Після перевірки чека голда зараховується на твій баланс в апці.<br>3. Забирай бонуси або примножуй голду в розділі <b>«Ігри»</b>.<br>4. Виводь від <b>100 G</b> у Standoff 2 — ми покриваємо комісію ринку 20%!',
+      dep_title: '💳 Поповнення балансу',
+      min_100: 'Мін. 100 G',
+      dep_amount_lbl: 'Кількість голди для поповнення (мін. 100 G):',
+      to_pay_lbl: 'Сума до переказу:',
+      credit_to_lbl: 'Зарахування:',
+      to_app_bal: 'На баланс додатку',
+      choose_bank_lbl: 'Оберіть банк для переказу:',
+      receipt_lbl: 'Скріншот квитанції про оплату:',
+      dep_btn: '✅ Я оплатив, надіслати заявку',
+      game_rocket_name: 'Ракетка',
+      game_rocket_desc: 'Множник до x30.00',
+      game_soon_name: 'Скоро...',
+      game_soon_desc: 'Нова міні-гра в розробці',
+      game_soon_msg: 'Нова гра з’явиться в наступному оновленні!',
+      rocket_ready: 'Зробіть ставку та запустіть ракету',
+      bet_lbl: 'Ставка (G):',
+      autocash_lbl: 'Авто-стоп (x):',
+      rocket_start: '🔥 ЗАПУСТИТИ РАКЕТКУ',
+      bonuses_title: '🎁 Щоденні та стартові бонуси',
+      daily_title: 'Щоденний бонус',
+      daily_desc: 'Забирай безкоштовну голду кожні 24 години',
+      claim_btn: 'Забрати',
+      sub_title: 'Підписка на канал',
+      sub_desc: 'Підпишись на наш Telegram-канал та отримай нагороду',
+      go_channel_btn: 'Перейти',
+      check_sub_btn: 'Перевірити',
+      ref_title: '👥 Реферальна програма',
+      ref_desc: 'Запрошуй друзів за своїм персональним посиланням! За кожного нового гравця, який запустить бота за твоїм посиланням, ти миттєво отримуєш <b>15 G</b> на баланс.',
+      ref_invited_lbl: 'Запрошено друзів',
+      ref_earned_lbl: 'Зароблено з рефералів',
+      copy_ref_btn: '🔗 Скопіювати реферальне посилання',
+      wd_title: '📤 Вивід голди в Standoff 2',
+      wd_amount_lbl: 'Скільки вивести з балансу (мін. 100 G):',
+      wd_skin_price_lbl: 'Виставити скін на ринку за:',
+      wd_fee_note: 'Комісія ринку 20% вже врахована, а унікальні копійки допоможуть швидко знайти саме ваш скін.',
+      wd_skin_name_lbl: 'Назва вашого скіна на ринку:',
+      wd_skin_photo_lbl: 'Скріншот виставленого скіна на ринку:',
+      wd_btn: '💎 Замовити вивід у Standoff 2',
+      history_title: '📜 Історія заявок (вхід та вивід)',
+      nav_home: 'Головна',
+      nav_dep: 'Поповнити',
+      nav_games: 'Ігри',
+      nav_bonus: 'Бонуси',
+      nav_wd: 'Вивід'
+    },
+    en: {
+      balance_lbl: 'Balance',
+      hero_title: 'Welcome to Monl1s Store!',
+      hero_desc: 'Buy Standoff 2 gold at the best rate, claim daily bonuses, multiply your balance in games and withdraw directly to Standoff 2.',
+      btn_go_deposit: '💳 Top Up G',
+      btn_go_games: '🎮 Play Rocket',
+      stat_bal: 'Balance',
+      stat_dep: 'Deposited',
+      stat_refs: 'Referrals',
+      how_title: '⚡ How it works',
+      how_steps: '1. Top up your balance via card (Mono, A-Bank or PrivatBank) from <b>100 G</b>.<br>2. Once verified, gold is credited to your app balance.<br>3. Claim bonuses or multiply gold in <b>Games</b>.<br>4. Withdraw from <b>100 G</b> to Standoff 2 — we cover the 20% market fee!',
+      dep_title: '💳 Balance Top Up',
+      min_100: 'Min. 100 G',
+      dep_amount_lbl: 'Gold amount to deposit (min. 100 G):',
+      to_pay_lbl: 'Amount to pay:',
+      credit_to_lbl: 'Destination:',
+      to_app_bal: 'App balance',
+      choose_bank_lbl: 'Select bank for transfer:',
+      receipt_lbl: 'Payment receipt screenshot:',
+      dep_btn: '✅ Paid, submit request',
+      game_rocket_name: 'Rocket',
+      game_rocket_desc: 'Multiplier up to x30.00',
+      game_soon_name: 'Soon...',
+      game_soon_desc: 'New mini-game in progress',
+      game_soon_msg: 'A new game will arrive in the next update!',
+      rocket_ready: 'Place your bet and launch the rocket',
+      bet_lbl: 'Bet (G):',
+      autocash_lbl: 'Auto-cashout (x):',
+      rocket_start: '🔥 LAUNCH ROCKET',
+      bonuses_title: '🎁 Daily & Starter Bonuses',
+      daily_title: 'Daily Bonus',
+      daily_desc: 'Claim free gold every 24 hours',
+      claim_btn: 'Claim',
+      sub_title: 'Channel Subscription',
+      sub_desc: 'Subscribe to our Telegram channel and get a reward',
+      go_channel_btn: 'Open',
+      check_sub_btn: 'Verify',
+      ref_title: '👥 Referral Program',
+      ref_desc: 'Invite friends using your personal link! For every new player who starts the bot via your link, you instantly get <b>15 G</b>.',
+      ref_invited_lbl: 'Invited friends',
+      ref_earned_lbl: 'Referral earnings',
+      copy_ref_btn: '🔗 Copy referral link',
+      wd_title: '📤 Withdraw Gold to Standoff 2',
+      wd_amount_lbl: 'Amount to withdraw (min. 100 G):',
+      wd_skin_price_lbl: 'List your skin on market for:',
+      wd_fee_note: 'The 20% market fee is covered, and unique cents help us find your exact skin listing.',
+      wd_skin_name_lbl: 'Your skin name on market:',
+      wd_skin_photo_lbl: 'Screenshot of listed skin:',
+      wd_btn: '💎 Request Standoff 2 Withdrawal',
+      history_title: '📜 Requests History',
+      nav_home: 'Home',
+      nav_dep: 'Top Up',
+      nav_games: 'Games',
+      nav_bonus: 'Bonuses',
+      nav_wd: 'Withdraw'
+    }
+  };
+
+  let curLang = 'ru';
+  function t(key) { return (I18N[curLang] && I18N[curLang][key]) || I18N.ru[key] || key; }
+
+  function setLang(lang, btn) {
+    curLang = lang;
+    document.querySelectorAll('.lang-btn').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const k = el.getAttribute('data-i18n');
+      if (I18N[lang][k]) el.innerHTML = I18N[lang][k];
+    });
+  }
+
+  const tgUser = tg?.initDataUnsafe?.user || { id: 5224967757, username: 'yternaft', first_name: 'Illia' };
+  let userState = { goldBalance: 0, totalDeposited: 0, referralsCount: 0, referralEarned: 0, lastDailyClaim: 0, channelClaimed: false };
+  let appConfig = { botUsername: 'so2_gold_market_bot', channelUrl: 'https://t.me/monlis_gold_channel', ratePer100: 35, minDeposit: 100, minWithdraw: 100 };
+  let selectedBank = 'Mono';
   const uniqueCents = Math.floor(11 + Math.random() * 88) / 100;
 
-  // Приховати splash-екран
   window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('splash').classList.add('hide');
-    }, 550);
+    setTimeout(() => document.getElementById('splash').classList.add('hide'), 500);
   });
 
   // Фізика фонових частинок
   const bgCanvas = document.getElementById('bg-canvas');
   const bgCtx = bgCanvas.getContext('2d');
-  const sparks = [];
+  const bgParticles = [];
 
   function resizeBg() {
     bgCanvas.width = window.innerWidth;
@@ -672,8 +1070,8 @@
   window.addEventListener('resize', resizeBg);
   resizeBg();
 
-  for (let i = 0; i < 36; i++) {
-    sparks.push({
+  for (let i = 0; i < 40; i++) {
+    bgParticles.push({
       x: Math.random() * bgCanvas.width,
       y: Math.random() * bgCanvas.height,
       vx: (Math.random() - 0.5) * 0.45,
@@ -683,196 +1081,282 @@
     });
   }
 
-  function spawnBurst(x, y, count = 10) {
-    for (let i = 0; i < count; i++) {
-      sparks.push({
-        x,
-        y,
-        vx: (Math.random() - 0.5) * 3.5,
-        vy: (Math.random() - 0.5) * 3.5,
-        r: 2 + Math.random() * 1.5,
-        a: 0.9
+  window.addEventListener('pointerdown', (e) => {
+    for (let i = 0; i < 8; i++) {
+      bgParticles.push({
+        x: e.clientX, y: e.clientY,
+        vx: (Math.random() - 0.5) * 3.8,
+        vy: (Math.random() - 0.5) * 3.8,
+        r: 2.2, a: 0.95
       });
     }
-    if (sparks.length > 80) sparks.splice(0, count);
-  }
-
-  window.addEventListener('pointerdown', (e) => spawnBurst(e.clientX, e.clientY, 8));
+    if (bgParticles.length > 85) bgParticles.splice(0, 8);
+  });
 
   function renderBg() {
     bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-    for (const s of sparks) {
-      s.x += s.vx;
-      s.y += s.vy;
-      if (s.y < -10) s.y = bgCanvas.height + 10;
-      if (s.x < -10) s.x = bgCanvas.width + 10;
-      if (s.x > bgCanvas.width + 10) s.x = -10;
-
+    for (const p of bgParticles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.y < -10) p.y = bgCanvas.height + 10;
+      if (p.x < -10) p.x = bgCanvas.width + 10;
+      if (p.x > bgCanvas.width + 10) p.x = -10;
       bgCtx.beginPath();
-      bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      bgCtx.fillStyle = `rgba(255, 184, 0, ${s.a})`;
+      bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      bgCtx.fillStyle = `rgba(255, 184, 0, ${p.a})`;
       bgCtx.fill();
     }
     requestAnimationFrame(renderBg);
   }
   renderBg();
 
-  function notify(text) {
-    if (tg?.showAlert) tg.showAlert(text);
-    else alert(text);
+  function notify(msg) {
+    tg?.HapticFeedback?.notificationOccurred('warning');
+    if (tg?.showAlert) tg.showAlert(msg);
+    else alert(msg);
   }
 
-  function setBalanceUI(val) {
-    balance = Number(val || 0);
-    document.getElementById('balance-text').textContent = `${balance.toFixed(2)} G`;
+  function updateUI() {
+    const bal = Number(userState.goldBalance || 0).toFixed(2);
+    document.getElementById('balance-display').textContent = `${bal} G`;
+    document.getElementById('stat-balance').textContent = `${bal} G`;
+    document.getElementById('stat-deposited').textContent = `${Number(userState.totalDeposited || 0)} G`;
+    document.getElementById('stat-refs').textContent = `${userState.referralsCount || 0}`;
+    document.getElementById('ref-count-box').textContent = `${userState.referralsCount || 0}`;
+    document.getElementById('ref-earned-box').textContent = `${Number(userState.referralEarned || 0)} G`;
+
+    const refLink = `https://t.me/${appConfig.botUsername}?start=ref_${tgUser.id}`;
+    document.getElementById('ref-link-text').textContent = refLink;
+
+    const subBtn = document.getElementById('sub-btn');
+    if (userState.channelClaimed) {
+      subBtn.textContent = '✅ Получено';
+      subBtn.disabled = true;
+    }
   }
 
-  function pickAmount(val, btn) {
-    document.getElementById('gold-amount').value = val;
+  // Таймер для бонусу 24 години
+  setInterval(() => {
+    const btn = document.getElementById('daily-btn');
+    const cooldown = 24 * 60 * 60 * 1000;
+    const diff = Date.now() - (userState.lastDailyClaim || 0);
+    if (diff < cooldown) {
+      const left = cooldown - diff;
+      const h = String(Math.floor(left / 3600000)).padStart(2, '0');
+      const m = String(Math.floor((left % 3600000) / 60000)).padStart(2, '0');
+      const s = String(Math.floor((left % 60000) / 1000)).padStart(2, '0');
+      btn.textContent = `${h}:${m}:${s}`;
+      btn.disabled = true;
+    } else {
+      btn.textContent = t('claim_btn');
+      btn.disabled = false;
+    }
+  }, 1000);
+
+  // Поповнення
+  function setDepAmount(val, btn) {
+    document.getElementById('dep-gold').value = val;
     document.querySelectorAll('.preset').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
-    recalcShop();
+    recalcDeposit();
   }
 
-  function setDestination(dest) {
-    destination = dest;
-    document.getElementById('dest-market').classList.toggle('active', dest === 'market');
-    document.getElementById('dest-balance').classList.toggle('active', dest === 'balance');
-    const isMarket = dest === 'market';
-    document.getElementById('market-inputs').style.display = isMarket ? 'block' : 'none';
-    document.getElementById('market-price-row').style.display = isMarket ? 'flex' : 'none';
-    document.getElementById('match-note').style.display = isMarket ? 'block' : 'none';
+  function recalcDeposit() {
+    const gold = Math.max(0, Number(document.getElementById('dep-gold').value) || 0);
+    const uah = ((gold / 100) * 35).toFixed(2);
+    document.getElementById('dep-uah').textContent = `${uah} грн`;
   }
 
-  function recalcShop() {
-    const gold = Math.max(0, Number(document.getElementById('gold-amount').value) || 0);
-    const uah = ((gold / 100) * RATE_PER_100).toFixed(2);
-    const market = ((gold / MARKET_FEE) + uniqueCents).toFixed(2);
-    document.getElementById('pay-uah').textContent = `${uah} грн`;
-    document.getElementById('market-price').textContent = `${market} G`;
+  function selectBank(bank, el) {
+    selectedBank = bank;
+    document.querySelectorAll('.bank-card').forEach((c) => c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('selected-bank-name').textContent = `${bank} (нажмите, чтобы скопировать)`;
+    document.getElementById('selected-card-num').textContent = BANKS[bank];
   }
 
-  function recalcWithdraw() {
-    const gold = Math.max(0, Number(document.getElementById('wd-amount').value) || 0);
-    const market = ((gold / MARKET_FEE) + uniqueCents).toFixed(2);
-    document.getElementById('wd-market-price').textContent = `${market} G`;
+  function copySelectedCard() {
+    const raw = BANKS[selectedBank].replace(/\s+/g, '');
+    navigator.clipboard?.writeText(raw);
+    tg?.HapticFeedback?.impactOccurred('light');
+    notify(`Карта ${selectedBank} скопирована!`);
   }
 
-  function copyCardNumber() {
-    const num = document.getElementById('card-value').textContent.trim();
-    navigator.clipboard?.writeText(num);
-    notify('Номер картки скопійовано');
-  }
+  async function submitDeposit() {
+    const gold = Number(document.getElementById('dep-gold').value);
+    const receipt = document.getElementById('dep-receipt').files[0];
 
-  async function sendOrder() {
-    const gold = Number(document.getElementById('gold-amount').value);
-    const uah = ((gold / 100) * RATE_PER_100).toFixed(2);
-    const market = ((gold / MARKET_FEE) + uniqueCents).toFixed(2);
-    const skinName = document.getElementById('skin-name').value.trim();
-    const skinPhoto = document.getElementById('skin-photo').files[0];
-    const receiptPhoto = document.getElementById('receipt-photo').files[0];
+    if (!gold || gold < 100) return notify('Минимальное пополнение — 100 G!');
+    if (!receipt) return notify('Прикрепите скриншот чека об оплате!');
 
-    if (!gold || gold < 20) return notify('Мінімальна сума замовлення — 20 G');
-    if (!receiptPhoto) return notify('Додайте скріншот оплати');
-    if (destination === 'market' && (!skinName || !skinPhoto)) {
-      return notify('Вкажіть назву скіна та додайте його скріншот');
-    }
-
-    const btn = document.getElementById('order-btn');
+    const btn = document.getElementById('dep-submit-btn');
     btn.disabled = true;
-    btn.textContent = 'Надсилаємо...';
 
     const fd = new FormData();
     fd.append('userId', tgUser.id);
-    fd.append('username', tgUser.username || tgUser.first_name || 'player');
+    fd.append('username', tgUser.username || tgUser.first_name);
     fd.append('goldAmount', gold);
-    fd.append('priceUah', uah);
-    fd.append('marketPrice', market);
+    fd.append('priceUah', ((gold / 100) * 35).toFixed(2));
+    fd.append('bankName', selectedBank);
+    fd.append('receipt', receipt);
+
+    try {
+      const res = await fetch(`${API_URL}/api/deposit`, { method: 'POST', body: fd });
+      const data = await res.json();
+      if (!data.success) return notify(data.error || 'Ошибка');
+      notify(`Заявка #${data.order.orderId} отправлена админу!`);
+      document.getElementById('dep-receipt').value = '';
+      await loadUserData();
+    } catch {
+      notify('Ошибка соединения с сервером');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // Бонуси
+  async function claimDaily() {
+    try {
+      const res = await fetch(`${API_URL}/api/bonus/daily`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: tgUser.id })
+      });
+      const data = await res.json();
+      if (!data.success) return notify('Бонус будет доступен через 24 часа');
+      userState.goldBalance = data.balance;
+      userState.lastDailyClaim = data.lastDailyClaim;
+      updateUI();
+      notify('🎉 Вы получили +5 G!');
+    } catch {
+      notify('Ошибка сервера');
+    }
+  }
+
+  function openChannel() {
+    const url = appConfig.channelUrl || 'https://t.me/monlis_gold_channel';
+    if (tg?.openTelegramLink) tg.openTelegramLink(url);
+    else window.open(url, '_blank');
+  }
+
+  async function claimChannel() {
+    try {
+      const res = await fetch(`${API_URL}/api/bonus/channel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: tgUser.id })
+      });
+      const data = await res.json();
+      if (!data.success) return notify('Вы еще не подписались на канал!');
+      userState.goldBalance = data.balance;
+      userState.channelClaimed = true;
+      updateUI();
+      notify('🎉 Награда +15 G зачислена!');
+    } catch {
+      notify('Ошибка проверки подписки');
+    }
+  }
+
+  function copyRefLink() {
+    const link = document.getElementById('ref-link-text').textContent;
+    navigator.clipboard?.writeText(link);
+    tg?.HapticFeedback?.impactOccurred('medium');
+    notify('Реферальная ссылка скопирована!');
+  }
+
+  // Вивід в Standoff 2
+  function recalcWithdraw() {
+    const gold = Math.max(0, Number(document.getElementById('wd-gold').value) || 0);
+    const market = ((gold / 0.8) + uniqueCents).toFixed(2);
+    document.getElementById('wd-market-price').textContent = `${market} G`;
+  }
+
+  async function submitWithdraw() {
+    const gold = Number(document.getElementById('wd-gold').value);
+    const skinName = document.getElementById('wd-skin-name').value.trim();
+    const skinPhoto = document.getElementById('wd-skin-photo').files[0];
+    const marketPrice = ((gold / 0.8) + uniqueCents).toFixed(2);
+
+    if (!gold || gold < 100) return notify('Минимальный вывод — 100 G!');
+    if (userState.goldBalance < gold) return notify('Недостаточно голды на балансе!');
+    if (!skinName) return notify('Укажите название выставленного скина!');
+
+    const btn = document.getElementById('wd-submit-btn');
+    btn.disabled = true;
+
+    const fd = new FormData();
+    fd.append('userId', tgUser.id);
+    fd.append('username', tgUser.username || tgUser.first_name);
+    fd.append('goldAmount', gold);
+    fd.append('marketPrice', marketPrice);
     fd.append('skinName', skinName);
-    fd.append('destination', destination);
-    fd.append('receipt', receiptPhoto);
     if (skinPhoto) fd.append('skinPhoto', skinPhoto);
 
     try {
-      const res = await fetch(`${API_URL}/api/order`, { method: 'POST', body: fd });
+      const res = await fetch(`${API_URL}/api/withdraw`, { method: 'POST', body: fd });
       const data = await res.json();
-      if (!data.success) return notify(data.error || 'Помилка надсилання');
-      notify(`Заявку #${data.order.orderId} створено`);
-      document.getElementById('receipt-photo').value = '';
-      document.getElementById('skin-photo').value = '';
-      await fetchProfile();
+      if (!data.success) return notify(data.error || 'Ошибка вывода');
+      userState.goldBalance = data.balance;
+      updateUI();
+      notify(`Заявка на вывод #${data.order.orderId} принята!`);
+      document.getElementById('wd-skin-name').value = '';
+      document.getElementById('wd-skin-photo').value = '';
+      await loadUserData();
     } catch {
-      notify('Не вдалося з’єднатися з сервером');
+      notify('Ошибка соединения с сервером');
     } finally {
       btn.disabled = false;
-      btn.textContent = '✅ Надіслати заявку';
     }
   }
 
-  async function sendWithdraw() {
-    const amount = Number(document.getElementById('wd-amount').value);
-    const skinName = document.getElementById('wd-skin').value.trim();
-    const marketPrice = ((amount / MARKET_FEE) + uniqueCents).toFixed(2);
-
-    if (!amount || amount < 20 || amount > balance) {
-      return notify('Недостатньо голди на балансі (мін. 20 G)');
-    }
-    if (!skinName) return notify('Вкажіть назву скіна');
-
-    try {
-      const res = await fetch(`${API_URL}/api/withdraw`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: tgUser.id,
-          username: tgUser.username || tgUser.first_name,
-          goldAmount: amount,
-          marketPrice,
-          skinName
-        })
-      });
-      const data = await res.json();
-      if (!data.success) return notify(data.error || 'Помилка виводу');
-      setBalanceUI(data.balance);
-      notify('Заявку на вивід надіслано');
-      await fetchProfile();
-    } catch {
-      notify('Помилка з’єднання з сервером');
-    }
-  }
-
-  // Гра Ракетка
+  // === ГРА РАКЕТКА З ФІЗИКОЮ ===
   const rCanvas = document.getElementById('rocket-canvas');
   const rCtx = rCanvas.getContext('2d');
-  let phase = 'idle'; // idle | flying | crashed
-  let mult = 1.0;
+  let rocketPhase = 'idle';
+  let curMult = 1.0;
   let crashAt = 1.0;
-  let elapsed = 0;
+  let flyTime = 0;
   let activeBet = 0;
-  let fx = [];
+  let rocketFx = [];
+  let autoCashed = false;
 
-  function resizeArena() {
+  function resizeRocket() {
     rCanvas.width = rCanvas.parentElement.clientWidth;
     rCanvas.height = rCanvas.parentElement.clientHeight;
   }
-  resizeArena();
+  resizeRocket();
 
-  function setRocketButton(mode, label = '') {
-    const btn = document.getElementById('rocket-action-btn');
-    if (mode === 'cashout') {
-      btn.className = 'btn btn-cashout';
-      btn.textContent = label;
-    } else {
-      btn.className = 'btn btn-gold';
-      btn.textContent = '🔥 ЗАПУСТИТИ';
-    }
+  function modBet(action) {
+    const inp = document.getElementById('rocket-bet');
+    let v = Number(inp.value) || 1;
+    if (action === 'half') v = Math.max(1, Math.floor(v / 2));
+    if (action === 'double') v = Math.min(Math.floor(userState.goldBalance), v * 2);
+    if (action === 'plus10') v = v + 10;
+    if (action === 'max') v = Math.max(1, Math.floor(userState.goldBalance));
+    inp.value = v;
   }
 
-  async function onRocketClick() {
-    if (phase === 'idle' || phase === 'crashed') {
-      const bet = Number(document.getElementById('bet-input').value);
-      if (!bet || bet < 1 || bet > balance) {
-        return notify('Недостатньо голди на балансі (мін. ставка 1 G)');
+  function setAuto(val) {
+    document.getElementById('rocket-auto').value = val;
+  }
+
+  function addCrashBadge(mult) {
+    const strip = document.getElementById('crash-history');
+    const span = document.createElement('span');
+    const cls = mult >= 3 ? 'high' : mult >= 1.5 ? 'mid' : 'low';
+    span.className = `mult-pill ${cls}`;
+    span.textContent = `${mult.toFixed(2)}x`;
+    strip.prepend(span);
+    if (strip.children.length > 10) strip.lastChild.remove();
+  }
+
+  async function toggleRocket() {
+    const btn = document.getElementById('rocket-btn');
+
+    if (rocketPhase === 'idle' || rocketPhase === 'crashed') {
+      const bet = Number(document.getElementById('rocket-bet').value);
+      if (!bet || bet < 1 || bet > userState.goldBalance) {
+        return notify('Недостаточно голды на балансе (мин. ставка 1 G)');
       }
 
       try {
@@ -882,188 +1366,221 @@
           body: JSON.stringify({ userId: tgUser.id, bet })
         });
         const data = await res.json();
-        if (!data.success) return notify(data.error || 'Не вдалося почати раунд');
+        if (!data.success) return notify(data.error);
 
-        setBalanceUI(data.balance);
+        userState.goldBalance = data.balance;
+        updateUI();
+
         activeBet = bet;
         crashAt = Number(data.crashPoint);
-        mult = 1.0;
-        elapsed = 0;
-        fx = [];
-        phase = 'flying';
+        curMult = 1.0;
+        flyTime = 0;
+        rocketFx = [];
+        autoCashed = false;
+        rocketPhase = 'flying';
 
-        const mEl = document.getElementById('mult-text');
+        tg?.HapticFeedback?.impactOccurred('medium');
+        const mEl = document.getElementById('mult-display');
         mEl.style.color = '#ffffff';
         mEl.textContent = '1.00x';
-        document.getElementById('arena-msg').textContent = 'Ракета летить — тисни забрати вчасно!';
-        setRocketButton('cashout', `💰 ЗАБРАТИ (${bet.toFixed(2)} G)`);
+        document.getElementById('rocket-hint').textContent = 'Ракета набирает высоту!';
+        btn.className = 'btn btn-green';
+        btn.textContent = `💰 ЗАБРАТЬ (${bet.toFixed(2)} G)`;
       } catch {
         notify('Сервер недоступний');
       }
       return;
     }
 
-    if (phase === 'flying') {
-      const cashMult = Number(mult.toFixed(2));
-      phase = 'idle';
-      setRocketButton('start');
-
-      try {
-        const res = await fetch(`${API_URL}/api/rocket/cashout`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: tgUser.id, multiplier: cashMult })
-        });
-        const data = await res.json();
-        if (data.success) {
-          setBalanceUI(data.balance);
-          document.getElementById('arena-msg').textContent = `Забрано +${data.winAmount.toFixed(2)} G на ${cashMult.toFixed(2)}x`;
-        } else {
-          document.getElementById('arena-msg').textContent = data.error || 'Раунд завершено';
-        }
-      } catch {
-        notify('Помилка під час виводу виграшу');
-      }
+    if (rocketPhase === 'flying') {
+      await cashoutRocket();
     }
   }
 
-  function stepRocket() {
+  async function cashoutRocket() {
+    if (rocketPhase !== 'flying') return;
+    rocketPhase = 'idle';
+    const btn = document.getElementById('rocket-btn');
+    btn.className = 'btn btn-gold';
+    btn.textContent = t('rocket_start');
+
+    const multVal = Number(curMult.toFixed(2));
+    try {
+      const res = await fetch(`${API_URL}/api/rocket/cashout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: tgUser.id, multiplier: multVal })
+      });
+      const data = await res.json();
+      if (data.success) {
+        userState.goldBalance = data.balance;
+        updateUI();
+        tg?.HapticFeedback?.notificationOccurred('success');
+        document.getElementById('rocket-hint').textContent = `🎉 Выигрыш +${data.winAmount.toFixed(2)} G на ${multVal.toFixed(2)}x!`;
+        addCrashBadge(crashAt);
+      }
+    } catch {}
+  }
+
+  function renderRocket() {
     rCtx.clearRect(0, 0, rCanvas.width, rCanvas.height);
 
-    if (phase === 'flying') {
-      elapsed += 0.016;
-      mult = 1 + Math.pow(elapsed * 0.44, 1.62);
-
-      const mEl = document.getElementById('mult-text');
-      mEl.textContent = `${mult.toFixed(2)}x`;
-      document.getElementById('rocket-action-btn').textContent = `💰 ЗАБРАТИ (${(activeBet * mult).toFixed(2)} G)`;
-
-      const t = Math.min(1, elapsed / 6.2);
-      const x = 44 + t * (rCanvas.width - 96);
-      const y = rCanvas.height - 46 - Math.pow(t, 0.82) * (rCanvas.height - 96) + Math.sin(elapsed * 9) * 2.5;
-
-      // Слід траєкторії
+    // Сітка висоти на фоні арени
+    rCtx.strokeStyle = 'rgba(255,255,255,0.04)';
+    rCtx.lineWidth = 1;
+    for (let y = 40; y < rCanvas.height; y += 45) {
       rCtx.beginPath();
-      rCtx.moveTo(24, rCanvas.height - 28);
-      rCtx.quadraticCurveTo(x * 0.55, rCanvas.height - 35, x, y);
-      rCtx.strokeStyle = 'rgba(0, 229, 255, 0.45)';
+      rCtx.moveTo(0, y);
+      rCtx.lineTo(rCanvas.width, y);
+      rCtx.stroke();
+    }
+
+    if (rocketPhase === 'flying') {
+      flyTime += 0.016;
+      curMult = 1 + Math.pow(flyTime * 0.44, 1.62);
+
+      const mEl = document.getElementById('mult-display');
+      mEl.textContent = `${curMult.toFixed(2)}x`;
+      document.getElementById('rocket-btn').textContent = `💰 ЗАБРАТЬ (${(activeBet * curMult).toFixed(2)} G)`;
+
+      // Перевірка авто-стопу
+      const autoTarget = Number(document.getElementById('rocket-auto').value);
+      if (!autoCashed && autoTarget >= 1.1 && curMult >= autoTarget && curMult < crashAt) {
+        autoCashed = true;
+        cashoutRocket();
+      }
+
+      const p = Math.min(1, flyTime / 6.5);
+      const rx = 42 + p * (rCanvas.width - 95);
+      const ry = rCanvas.height - 44 - Math.pow(p, 0.8) * (rCanvas.height - 95) + Math.sin(flyTime * 10) * 3;
+
+      // Крива траєкторії
+      rCtx.beginPath();
+      rCtx.moveTo(20, rCanvas.height - 25);
+      rCtx.quadraticCurveTo(rx * 0.55, rCanvas.height - 32, rx, ry);
+      rCtx.strokeStyle = 'rgba(0, 229, 255, 0.55)';
       rCtx.lineWidth = 3;
       rCtx.stroke();
 
-      // Іскри з двигуна
-      for (let i = 0; i < 3; i++) {
-        fx.push({
-          x: x - 12,
-          y: y + 8,
-          vx: -1.8 - Math.random() * 2.2,
+      // Іскри з сопла
+      for (let i = 0; i < 4; i++) {
+        rocketFx.push({
+          x: rx - 12, y: ry + 8,
+          vx: -2 - Math.random() * 2.5,
           vy: 1 + Math.random() * 2,
           life: 1,
           color: Math.random() > 0.45 ? '#ffb800' : '#00e5ff'
         });
       }
 
-      if (mult >= crashAt) {
-        phase = 'crashed';
+      if (curMult >= crashAt) {
+        rocketPhase = 'crashed';
         mEl.textContent = `💥 ${crashAt.toFixed(2)}x`;
         mEl.style.color = '#ff3b5c';
-        document.getElementById('arena-msg').textContent = 'Вибух! Спробуй ще раз';
-        setRocketButton('start');
+        document.getElementById('rocket-hint').textContent = 'Ракета взорвалась!';
+        const btn = document.getElementById('rocket-btn');
+        btn.className = 'btn btn-gold';
+        btn.textContent = t('rocket_start');
+        addCrashBadge(crashAt);
+        tg?.HapticFeedback?.notificationOccurred('error');
 
-        for (let i = 0; i < 34; i++) {
-          fx.push({
-            x,
-            y,
-            vx: (Math.random() - 0.5) * 8.5,
-            vy: (Math.random() - 0.5) * 8.5,
-            life: 1.15,
+        for (let i = 0; i < 40; i++) {
+          rocketFx.push({
+            x: rx, y: ry,
+            vx: (Math.random() - 0.5) * 9.5,
+            vy: (Math.random() - 0.5) * 9.5,
+            life: 1.25,
             color: i % 2 === 0 ? '#ff3b5c' : '#ffb800'
           });
         }
       } else {
         rCtx.save();
-        rCtx.translate(x, y);
+        rCtx.translate(rx, ry);
         rCtx.rotate(-0.46);
-        rCtx.font = '30px Arial';
-        rCtx.fillText('🚀', -15, 11);
+        rCtx.font = '32px Arial';
+        rCtx.fillText('🚀', -16, 12);
         rCtx.restore();
       }
     }
 
-    for (let i = fx.length - 1; i >= 0; i--) {
-      const p = fx[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life -= 0.032;
-      if (p.life <= 0) {
-        fx.splice(i, 1);
+    for (let i = rocketFx.length - 1; i >= 0; i--) {
+      const f = rocketFx[i];
+      f.x += f.vx;
+      f.y += f.vy;
+      f.life -= 0.03;
+      if (f.life <= 0) {
+        rocketFx.splice(i, 1);
         continue;
       }
       rCtx.beginPath();
-      rCtx.arc(p.x, p.y, 3.8 * p.life, 0, Math.PI * 2);
-      rCtx.fillStyle = p.color;
-      rCtx.globalAlpha = Math.max(0, p.life);
+      rCtx.arc(f.x, f.y, 4 * f.life, 0, Math.PI * 2);
+      rCtx.fillStyle = f.color;
+      rCtx.globalAlpha = Math.max(0, f.life);
       rCtx.fill();
       rCtx.globalAlpha = 1;
     }
 
-    requestAnimationFrame(stepRocket);
+    requestAnimationFrame(renderRocket);
   }
-  stepRocket();
+  renderRocket();
 
-  async function fetchProfile() {
+  // Завантаження даних та історії
+  async function loadUserData() {
     try {
       const res = await fetch(`${API_URL}/api/user/${tgUser.id}`);
       const data = await res.json();
-      if (data.user) setBalanceUI(data.user.goldBalance);
+      if (data.user) userState = data.user;
+      if (data.config) appConfig = data.config;
+      updateUI();
 
-      const box = document.getElementById('orders-container');
+      const list = document.getElementById('orders-list');
       if (!data.orders || !data.orders.length) {
-        box.innerHTML = '<div class="hint">Заявок поки немає.</div>';
+        list.innerHTML = '<div style="font-size: 12px; color: var(--muted);">Заявок пока нет.</div>';
         return;
       }
 
-      const statusLabel = {
-        pending: '⏳ На перевірці',
-        completed: '✅ Виконано',
-        rejected: '❌ Відхилено'
+      const stMap = {
+        pending: '⏳ На проверке',
+        completed: '✅ Выполнено',
+        rejected: '❌ Отклонено'
       };
 
-      box.innerHTML = data.orders
+      list.innerHTML = data.orders
         .map(
           (o) => `
-          <div class="order-card ${o.status}">
-            <div class="order-top">
-              <span>#${o.orderId} • ${o.goldAmount} G</span>
-              <span>${statusLabel[o.status] || o.status}</span>
+          <div class="order-item ${o.status}">
+            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800;">
+              <span>${o.type === 'deposit' ? '💳 Пополнение' : '📤 Вывод'} #${o.orderId}</span>
+              <span>${stMap[o.status] || o.status}</span>
             </div>
-            <div class="order-sub">
+            <div style="font-size:11px; color:var(--muted); margin-top:4px;">
               ${
-                o.destination === 'balance'
-                  ? 'Зарахування на баланс'
-                  : `Скін: ${o.skinName} • Ціна: ${o.marketPrice} G`
+                o.type === 'deposit'
+                  ? `Сумма: <b>${o.goldAmount} G</b> (${o.priceUah} грн • ${o.bankName})`
+                  : `Вывод: <b>${o.goldAmount} G</b> • Скин: ${o.skinName} (${o.marketPrice} G)`
               }
             </div>
           </div>
         `
         )
         .join('');
-    } catch {
-      // Ігноруємо помилку мережі при першому офлайн-відкритті
-    }
+    } catch {}
   }
 
-  function openPage(name, btn) {
+  function switchTab(tabName) {
     document.querySelectorAll('.page').forEach((p) => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach((b) => b.classList.remove('active'));
-    document.getElementById(`page-${name}`).classList.add('active');
-    btn.classList.add('active');
-    if (name === 'rocket') resizeArena();
-    if (name === 'orders') fetchProfile();
+    document.getElementById(`page-${tabName}`).classList.add('active');
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+    tg?.HapticFeedback?.selectionChanged();
+
+    if (tabName === 'games') resizeRocket();
+    if (tabName === 'withdraw' || tabName === 'home' || tabName === 'bonuses') loadUserData();
   }
 
-  recalcShop();
+  recalcDeposit();
   recalcWithdraw();
-  fetchProfile();
+  loadUserData();
 </script>
 </body>
 </html>
