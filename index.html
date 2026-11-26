@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Monl1s Gold Store</title>
+  <title>Monl1sGold.Store</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -12,7 +12,7 @@
       --surface-2: rgba(24, 33, 50, 0.94);
       --gold: #ffb800;
       --gold-2: #ff6b00;
-      --gold-glow: rgba(255, 184, 0, 0.34);
+      --gold-glow: rgba(255, 184, 0, 0.36);
       --cyan: #00e5ff;
       --purple: #a855f7;
       --green: #00e676;
@@ -32,8 +32,8 @@
 
     body {
       background:
-        radial-gradient(circle at 15% -5%, rgba(255, 184, 0, 0.14), transparent 40%),
-        radial-gradient(circle at 90% 10%, rgba(0, 229, 255, 0.1), transparent 40%),
+        radial-gradient(circle at 15% -5%, rgba(255, 184, 0, 0.16), transparent 42%),
+        radial-gradient(circle at 90% 10%, rgba(0, 229, 255, 0.11), transparent 42%),
         var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -50,32 +50,71 @@
       pointer-events: none;
     }
 
-    /* Splash */
+    /* Ефектна заставка Standoff 2 + гори голди */
     #splash {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, #141c2c, #06080d 75%);
-      z-index: 100;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(255, 184, 0, 0.22), transparent 55%),
+        linear-gradient(180deg, #0b101b 0%, #06080d 100%);
+      z-index: 120;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
+      padding: 20px;
+      text-align: center;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
     }
-    #splash.hide { opacity: 0; visibility: hidden; }
-    .splash-logo {
-      width: 72px; height: 72px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-2));
-      color: #080a0f;
+    #splash.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .splash-art {
+      width: 240px;
+      height: 185px;
+      border-radius: 24px;
+      background: radial-gradient(circle at center, rgba(255, 184, 0, 0.18), rgba(10, 15, 26, 0.92));
+      border: 1px solid rgba(255, 184, 0, 0.4);
+      box-shadow: 0 0 45px rgba(255, 184, 0, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      animation: floatArt 2.4s infinite ease-in-out;
+    }
+    @keyframes floatArt {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .splash-heading {
+      font-size: 22px;
       font-weight: 900;
-      font-size: 24px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 38px var(--gold-glow);
-      animation: pulse 1.3s infinite ease-in-out;
+      letter-spacing: 0.8px;
+      background: linear-gradient(90deg, #fff, var(--gold), #ff8a00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+    .splash-tagline {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      margin-bottom: 14px;
+    }
+    .progress-track {
+      width: 220px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--cyan));
+      transition: width 0.25s ease;
+    }
 
     .container {
       position: relative;
@@ -113,7 +152,7 @@
     .brand-title { font-size: 14px; font-weight: 800; }
     .brand-sub { font-size: 11px; color: var(--gold); font-weight: 700; }
 
-    .top-right { display: flex; align-items: center; gap: 8px; }
+    .top-right { display: flex; align-items: center; gap: 7px; }
 
     .lang-switch {
       display: flex;
@@ -147,7 +186,7 @@
     .bal-chip small { display: block; font-size: 9px; color: var(--muted); }
     .bal-chip strong { font-size: 14px; color: var(--gold); font-weight: 800; }
 
-    /* Cards */
+    /* Cards & Widgets */
     .card {
       background: var(--surface);
       backdrop-filter: blur(14px);
@@ -173,15 +212,12 @@
       color: var(--gold);
     }
 
-    /* Home Hero & Stats */
     .hero-banner {
-      background: linear-gradient(135deg, rgba(255, 184, 0, 0.2), rgba(255, 107, 0, 0.08) 55%, rgba(0, 229, 255, 0.12));
+      background: linear-gradient(135deg, rgba(255, 184, 0, 0.2), rgba(255, 107, 0, 0.08) 55%, rgba(0, 229, 255, 0.14));
       border: 1px solid rgba(255, 184, 0, 0.35);
       border-radius: 20px;
       padding: 16px;
       margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
     }
     .hero-banner h2 { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
     .hero-banner p { font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 12px; }
@@ -208,7 +244,21 @@
       gap: 8px;
     }
 
-    /* Banks selector */
+    .feature-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .mini-widget {
+      background: rgba(8, 11, 18, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 11px;
+    }
+    .mini-widget span { font-size: 11px; color: var(--muted); display: block; }
+    .mini-widget strong { font-size: 13px; font-weight: 800; color: var(--cyan); display: block; margin-top: 3px; }
+
+    /* Banks */
     .banks-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -229,7 +279,7 @@
       background: rgba(255, 184, 0, 0.14);
       transform: translateY(-1px);
     }
-    .bank-card .bank-dot {
+    .bank-dot {
       width: 10px; height: 10px;
       border-radius: 50%;
       margin: 0 auto 5px;
@@ -247,11 +297,9 @@
       margin-bottom: 12px;
       cursor: pointer;
     }
-    .copy-box:active { transform: scale(0.99); }
     .copy-box small { display: block; font-size: 11px; color: var(--muted); }
     .copy-box strong { font-size: 15px; letter-spacing: 0.8px; color: var(--gold); }
 
-    /* Presets & Inputs */
     .presets {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -304,7 +352,6 @@
       padding: 3px 0;
     }
 
-    /* Buttons */
     .btn {
       width: 100%;
       border: none;
@@ -336,7 +383,7 @@
       color: var(--text);
     }
 
-    /* Games Hub & Rocket */
+    /* Games & Rocket */
     .game-selector {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -349,7 +396,6 @@
       border-radius: 15px;
       padding: 12px;
       cursor: pointer;
-      position: relative;
     }
     .game-tile.active {
       border-color: var(--cyan);
@@ -479,7 +525,7 @@
     .order-item.completed { border-left-color: var(--green); }
     .order-item.rejected { border-left-color: var(--red); }
 
-    /* Bottom Nav (5 tabs) */
+    /* Bottom Nav */
     .nav {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -518,10 +564,63 @@
 </head>
 <body>
 
+<!-- ЗАСТАВКА: БОЄЦЬ STANDOFF 2 + ГОРИ ГОЛДИ -->
 <div id="splash">
-  <div class="splash-logo">M1S</div>
-  <div style="font-size: 19px; font-weight: 900; letter-spacing: 1px;">MONL1S GOLD STORE</div>
-  <div style="font-size: 12px; color: var(--muted);">Standoff 2 • 100 G = 35 грн</div>
+  <div class="splash-art">
+    <svg viewBox="0 0 240 185" width="225" height="175" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffe066" />
+          <stop offset="55%" stop-color="#ffb800" />
+          <stop offset="100%" stop-color="#ff6a00" />
+        </linearGradient>
+        <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00e5ff" />
+          <stop offset="100%" stop-color="#7c3aed" />
+        </linearGradient>
+      </defs>
+
+      <!-- Сяйво позаду -->
+      <circle cx="120" cy="82" r="56" fill="rgba(255,184,0,0.14)" />
+      <circle cx="120" cy="82" r="40" stroke="rgba(0,229,255,0.28)" stroke-width="1.2" stroke-dasharray="4 4" fill="none" />
+
+      <!-- Силует бійця Standoff 2 у тактичному шоломі -->
+      <path d="M74 142 C76 112, 94 102, 120 102 C146 102, 164 112, 166 142 Z" fill="#1e293b" stroke="#475569" stroke-width="2" />
+      <path d="M90 104 L120 124 L150 104" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" />
+      <!-- Шолом -->
+      <path d="M92 68 C92 43, 148 43, 148 68 C148 86, 136 96, 120 96 C104 96, 92 86, 92 68 Z" fill="#0f172a" stroke="#64748b" stroke-width="2.2" />
+      <!-- Візор -->
+      <path d="M98 63 Q120 58 142 63 L138 74 Q120 71 102 74 Z" fill="url(#visorGrad)" opacity="0.92" />
+      <!-- Приціл / маркер -->
+      <circle cx="168" cy="44" r="12" stroke="#00e5ff" stroke-width="1.5" fill="none" />
+      <line x1="168" y1="28" x2="168" y2="36" stroke="#00e5ff" stroke-width="1.5" />
+      <line x1="168" y1="52" x2="168" y2="60" stroke="#00e5ff" stroke-width="1.5" />
+      <line x1="152" y1="44" x2="160" y2="44" stroke="#00e5ff" stroke-width="1.5" />
+      <line x1="176" y1="44" x2="184" y2="44" stroke="#00e5ff" stroke-width="1.5" />
+
+      <!-- Гори голди (злитки та монети G) -->
+      <polygon points="22,168 58,124 96,168" fill="url(#goldGrad)" opacity="0.9" />
+      <polygon points="74,168 120,114 166,168" fill="url(#goldGrad)" />
+      <polygon points="144,168 182,126 218,168" fill="url(#goldGrad)" opacity="0.88" />
+
+      <!-- Злитки та символи G -->
+      <rect x="44" y="144" width="26" height="12" rx="3" fill="#fff3b0" stroke="#b45309" stroke-width="1.2" />
+      <rect x="105" y="136" width="32" height="14" rx="3" fill="#ffe066" stroke="#b45309" stroke-width="1.2" />
+      <rect x="166" y="145" width="26" height="12" rx="3" fill="#fff3b0" stroke="#b45309" stroke-width="1.2" />
+
+      <circle cx="84" cy="116" r="11" fill="url(#goldGrad)" stroke="#fff" stroke-width="1.2" />
+      <text x="84" y="120" text-anchor="middle" font-size="11" font-weight="900" fill="#111">G</text>
+
+      <circle cx="154" cy="112" r="12" fill="url(#goldGrad)" stroke="#fff" stroke-width="1.2" />
+      <text x="154" y="116" text-anchor="middle" font-size="12" font-weight="900" fill="#111">G</text>
+    </svg>
+  </div>
+
+  <div class="splash-heading">MONL1SGOLD.STORE</div>
+  <div class="splash-tagline">STANDOFF 2 • БОЛЬШЕ ГОЛДЫ, БОНУСОВ И ИГР</div>
+  <div class="progress-track">
+    <div class="progress-fill" id="splash-bar"></div>
+  </div>
 </div>
 
 <canvas id="bg-canvas"></canvas>
@@ -532,7 +631,7 @@
     <div class="brand">
       <div class="brand-icon">SO2</div>
       <div>
-        <div class="brand-title">Monl1s Gold</div>
+        <div class="brand-title">Monl1sGold.Store</div>
         <div class="brand-sub">100 G = 35 грн</div>
       </div>
     </div>
@@ -552,11 +651,11 @@
   <!-- 1. ГЛАВНАЯ -->
   <section id="page-home" class="page active">
     <div class="hero-banner">
-      <h2 data-i18n="hero_title">Добро пожаловать в Monl1s Store!</h2>
-      <p data-i18n="hero_desc">Покупай голду по выгодному курсу, забирай ежедневные бонусы, умножай баланс в играх и выводи голду прямо в Standoff 2.</p>
+      <h2 data-i18n="hero_title">Добро пожаловать в Monl1sGold.Store!</h2>
+      <p data-i18n="hero_desc">Пополняй баланс от 100 G по курсу 100 G = 35 грн, забирай бонусы, играй в Ракетку и выводи голду в Standoff 2.</p>
       <div class="quick-actions">
         <button type="button" class="btn btn-gold" onclick="switchTab('deposit')" data-i18n="btn_go_deposit">💳 Пополнить G</button>
-        <button type="button" class="btn btn-cyan" onclick="switchTab('games')" data-i18n="btn_go_games">🎮 Играть в Ракетку</button>
+        <button type="button" class="btn btn-cyan" onclick="switchTab('games')" data-i18n="btn_go_games">🎮 Раздел Игры</button>
       </div>
     </div>
 
@@ -577,14 +676,39 @@
 
     <div class="card">
       <div class="card-head">
+        <div class="card-title" data-i18n="widgets_title">📊 Быстрые показатели</div>
+        <div class="badge">MIN 100 G</div>
+      </div>
+      <div class="feature-strip">
+        <div class="mini-widget">
+          <span data-i18n="w_rate">Текущий курс</span>
+          <strong>100 G = 35 грн</strong>
+        </div>
+        <div class="mini-widget">
+          <span data-i18n="w_limits">Вход / Вывод</span>
+          <strong style="color: var(--gold);">от 100 G</strong>
+        </div>
+        <div class="mini-widget">
+          <span data-i18n="w_daily">Ежедневный бонус</span>
+          <strong style="color: var(--green);">+5 G / 24ч</strong>
+        </div>
+        <div class="mini-widget">
+          <span data-i18n="w_ref">Канал и рефералы</span>
+          <strong style="color: var(--purple);">+15 G</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
         <div class="card-title" data-i18n="how_title">⚡ Как всё работает</div>
         <div class="badge">24/7</div>
       </div>
       <div style="font-size: 12px; color: #cbd5e1; line-height: 1.55;" data-i18n="how_steps">
-        1. Пополни баланс через удобную карту (Mono, А-Банк или ПриватБанк) от <b>100 G</b>.<br>
-        2. После проверки чека голда поступает на твой баланс в приложении.<br>
-        3. Забирай бонусы или умножай голду в разделе <b>«Игры»</b>.<br>
-        4. Выводи от <b>100 G</b> в Standoff 2 — мы покрываем комиссию рынка 20%!
+        1. Пополни баланс через карту (Mono, А-Банк или ПриватБанк) от <b>100 G</b>.<br>
+        2. Голда зачисляется на баланс в приложении после проверки заявки.<br>
+        3. Забирай бонусы в разделе <b>«Бонусы»</b> и играй в <b>«Игры»</b>.<br>
+        4. Выводи от <b>100 G</b> в Standoff 2 через раздел <b>«Вывод»</b>.
       </div>
     </div>
   </section>
@@ -616,7 +740,7 @@
         </div>
         <div class="summary-row">
           <span data-i18n="credit_to_lbl">Зачисление:</span>
-          <strong style="color: var(--gold); font-size: 13px;" data-i18n="to_app_bal">На баланс приложения</strong>
+          <strong style="color: var(--gold); font-size: 13px;" data-i18n="to_app_bal">Только на баланс в апке</strong>
         </div>
       </div>
 
@@ -625,7 +749,7 @@
         <div class="banks-grid">
           <div class="bank-card active" onclick="selectBank('Mono', this)">
             <div class="bank-dot" style="background: #ffffff;"></div>
-            <span>Monobank</span>
+            <span>Mono</span>
           </div>
           <div class="bank-card" onclick="selectBank('А-Банк', this)">
             <div class="bank-dot" style="background: #00e676;"></div>
@@ -640,7 +764,7 @@
 
       <div class="copy-box" onclick="copySelectedCard()">
         <div>
-          <small id="selected-bank-name">Monobank (нажмите, чтобы скопировать)</small>
+          <small id="selected-bank-name">Mono (нажмите, чтобы скопировать)</small>
           <strong id="selected-card-num">4441 1110 6828 4243</strong>
         </div>
         <span style="font-size: 18px;">📋</span>
@@ -664,16 +788,16 @@
         <p data-i18n="game_rocket_desc">Множитель до x30.00</p>
       </div>
       <div class="game-tile locked" onclick="notify(t('game_soon_msg'))">
-        <span style="font-size: 20px;">🎰</span>
+        <span style="font-size: 20px;">💣</span>
         <h4 data-i18n="game_soon_name">Скоро...</h4>
-        <p data-i18n="game_soon_desc">Новая мини-игра в разработке</p>
+        <p data-i18n="game_soon_desc">Новые режимы в разработке</p>
       </div>
     </div>
 
     <div class="card">
       <div class="card-head">
         <div class="card-title">🚀 <span data-i18n="game_rocket_name">Ракетка</span></div>
-        <div class="badge" style="color: var(--cyan); background: rgba(0, 229, 255, 0.14);">LIVE</div>
+        <div class="badge" style="color: var(--cyan); background: rgba(0, 229, 255, 0.14);">RANDOM</div>
       </div>
 
       <div class="history-strip" id="crash-history">
@@ -718,18 +842,18 @@
     </div>
   </section>
 
-  <!-- 4. БОНУСЫ И РЕФЕРАЛКА -->
+  <!-- 4. БОНУСЫ -->
   <section id="page-bonuses" class="page">
     <div class="card">
       <div class="card-head">
         <div class="card-title" data-i18n="bonuses_title">🎁 Ежедневные и стартовые бонусы</div>
       </div>
 
-      <!-- Бонус 24 часа -->
+      <!-- Бонус кожні 24 години: 5 голди -->
       <div class="bonus-item">
         <div class="bonus-info">
-          <h4 data-i18n="daily_title">Ежедневный бонус</h4>
-          <p data-i18n="daily_desc">Забирай бесплатную голду каждые 24 часа</p>
+          <h4 data-i18n="daily_title">Бонус каждые 24 часа</h4>
+          <p data-i18n="daily_desc">Забирай бесплатную голду раз в сутки</p>
           <span class="bonus-reward">+5 G / 24ч</span>
         </div>
         <div class="bonus-action">
@@ -737,11 +861,11 @@
         </div>
       </div>
 
-      <!-- Бонус за подписку на канал -->
+      <!-- Бонус за підписку на https://t.me/monl1sgold: 15 голди -->
       <div class="bonus-item">
         <div class="bonus-info">
-          <h4 data-i18n="sub_title">Подписка на канал</h4>
-          <p data-i18n="sub_desc">Подпишись на наш Telegram-канал и получи награду</p>
+          <h4 data-i18n="sub_title">Подписка на @monl1sgold</h4>
+          <p data-i18n="sub_desc">Подпишись на канал t.me/monl1sgold и забери награду</p>
           <span class="bonus-reward">+15 G</span>
         </div>
         <div class="bonus-action" style="display: flex; flex-direction: column; gap: 5px;">
@@ -751,25 +875,25 @@
       </div>
     </div>
 
-    <!-- Реферальная программа -->
+    <!-- Реферальна програма: +15 голди за кожного реферала -->
     <div class="card">
       <div class="card-head">
         <div class="card-title" data-i18n="ref_title">👥 Реферальная программа</div>
         <div class="badge">+15 G</div>
       </div>
       <p style="font-size: 12px; color: #cbd5e1; line-height: 1.45;" data-i18n="ref_desc">
-        Приглашай друзей по своей персональной ссылке! За каждого нового игрока, который запустит бота по твоей ссылке, ты мгновенно получаешь <b>15 G</b> на баланс.
+        Приглашай друзей по своей ссылке! За каждого нового реферала начисляем <b>+15 G</b> на баланс.
       </p>
 
-      <div class="ref-link-box" id="ref-link-text">https://t.me/so2_gold_market_bot?start=ref_...</div>
+      <div class="ref-link-box" id="ref-link-text">https://t.me/so2_gold_market_bot?start=ref_5224967757</div>
 
       <div class="stats-grid" style="grid-template-columns: 1fr 1fr; margin-top: 8px;">
         <div class="stat-box">
-          <small data-i18n="ref_invited_lbl">Приглашено друзей</small>
+          <small data-i18n="ref_invited_lbl">Рефералов</small>
           <strong id="ref-count-box">0</strong>
         </div>
         <div class="stat-box">
-          <small data-i18n="ref_earned_lbl">Заработано с рефералов</small>
+          <small data-i18n="ref_earned_lbl">Получено за друзей</small>
           <strong id="ref-earned-box" style="color: var(--gold);">0 G</strong>
         </div>
       </div>
@@ -782,12 +906,12 @@
   <section id="page-withdraw" class="page">
     <div class="card">
       <div class="card-head">
-        <div class="card-title" data-i18n="wd_title">📤 Вывод голды в Standoff 2</div>
+        <div class="card-title" data-i18n="wd_title">📤 Вывод в Standoff 2</div>
         <div class="badge" data-i18n="min_100">Мин. 100 G</div>
       </div>
 
       <div class="field">
-        <label data-i18n="wd_amount_lbl">Сколько вывести с баланса (мин. 100 G):</label>
+        <label data-i18n="wd_amount_lbl">Сумма вывода с баланса (мин. 100 G):</label>
         <input type="number" id="wd-gold" class="input" value="100" min="100" oninput="recalcWithdraw()" />
       </div>
 
@@ -797,7 +921,7 @@
           <strong id="wd-market-price" style="color: var(--gold); font-size: 17px;">125.34 G</strong>
         </div>
         <div style="font-size: 11px; color: var(--muted); margin-top: 4px;" data-i18n="wd_fee_note">
-          Комиссия рынка 20% уже включена, а уникальные копійки помогут быстро найти именно ваш скин.
+          Комиссия рынка 20% учтена, а уникальные копейки помогают найти ваш скин на рынке.
         </div>
       </div>
 
@@ -811,19 +935,19 @@
         <input type="file" id="wd-skin-photo" accept="image/*" class="input" style="font-size: 12px; padding: 9px;" />
       </div>
 
-      <button type="button" class="btn btn-gold" id="wd-submit-btn" onclick="submitWithdraw()" data-i18n="wd_btn">💎 Заказать вывод в Standoff 2</button>
+      <button type="button" class="btn btn-gold" id="wd-submit-btn" onclick="submitWithdraw()" data-i18n="wd_btn">💎 Вывести в Standoff 2</button>
     </div>
 
     <div class="card">
       <div class="card-head">
-        <div class="card-title" data-i18n="history_title">📜 История заявок (вход и вывод)</div>
+        <div class="card-title" data-i18n="history_title">📜 История заявок</div>
       </div>
       <div id="orders-list"><div style="font-size: 12px; color: var(--muted);">Загрузка...</div></div>
     </div>
   </section>
 </div>
 
-<!-- 5 ВКЛАДОК ВНИЗУ -->
+<!-- 5 ВКЛАДОК -->
 <nav class="nav">
   <button type="button" class="nav-btn active" id="tab-home" onclick="switchTab('home')">
     <span class="ico">🏠</span>
@@ -855,8 +979,15 @@
     tg.setBackgroundColor('#070a10');
   }
 
-  // ВКАЖИ ТУТ URL СВОГО БЕКЕНДА НА RENDER АБО LOCALHOST
-  const API_URL = 'http://localhost:3000';
+  // Якщо сторінка відкрита з того самого сервера (http://localhost:3000 або Render) — беремо window.location.origin,
+  // а якщо з іншого домену (наприклад GitHub Pages) — підставляємо ваш бекенд URL.
+  const BACKEND_URL = 'https://monlis-gold-backend.onrender.com';
+  const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? window.location.origin
+    : BACKEND_URL;
+
+  const CHANNEL_LINK = 'https://t.me/monl1sgold';
+  const BOT_NICK = 'so2_gold_market_bot';
 
   const BANKS = {
     'Mono': '4441 1110 6828 4243',
@@ -867,54 +998,59 @@
   const I18N = {
     ru: {
       balance_lbl: 'Баланс',
-      hero_title: 'Добро пожаловать в Monl1s Store!',
-      hero_desc: 'Покупай голду по выгодному курсу, забирай ежедневные бонусы, умножай баланс в играх и выводи голду прямо в Standoff 2.',
+      hero_title: 'Добро пожаловать в Monl1sGold.Store!',
+      hero_desc: 'Пополняй баланс от 100 G по курсу 100 G = 35 грн, забирай бонусы, играй в Ракетку и выводи голду в Standoff 2.',
       btn_go_deposit: '💳 Пополнить G',
-      btn_go_games: '🎮 Играть в Ракетку',
+      btn_go_games: '🎮 Раздел Игры',
       stat_bal: 'На балансе',
       stat_dep: 'Пополнено',
       stat_refs: 'Рефералов',
+      widgets_title: '📊 Быстрые показатели',
+      w_rate: 'Текущий курс',
+      w_limits: 'Вход / Вывод',
+      w_daily: 'Ежедневный бонус',
+      w_ref: 'Канал и рефералы',
       how_title: '⚡ Как всё работает',
-      how_steps: '1. Пополни баланс через удобную карту (Mono, А-Банк или ПриватБанк) от <b>100 G</b>.<br>2. После проверки чека голда поступает на твой баланс в приложении.<br>3. Забирай бонусы или умножай голду в разделе <b>«Игры»</b>.<br>4. Выводи от <b>100 G</b> в Standoff 2 — мы покрываем комиссию рынка 20%!',
+      how_steps: '1. Пополни баланс через карту (Mono, А-Банк или ПриватБанк) от <b>100 G</b>.<br>2. Голда зачисляется на баланс в приложении после проверки заявки.<br>3. Забирай бонусы в разделе <b>«Бонусы»</b> и играй в <b>«Игры»</b>.<br>4. Выводи от <b>100 G</b> в Standoff 2 через раздел <b>«Вывод»</b>.',
       dep_title: '💳 Пополнение баланса',
       min_100: 'Мин. 100 G',
       dep_amount_lbl: 'Количество голды для пополнения (мин. 100 G):',
       to_pay_lbl: 'Сумма к переводу:',
       credit_to_lbl: 'Зачисление:',
-      to_app_bal: 'На баланс приложения',
+      to_app_bal: 'Только на баланс в апке',
       choose_bank_lbl: 'Выберите банк для перевода:',
       receipt_lbl: 'Скриншот квитанции об оплате:',
       dep_btn: '✅ Я оплатил, отправить заявку',
       game_rocket_name: 'Ракетка',
       game_rocket_desc: 'Множитель до x30.00',
       game_soon_name: 'Скоро...',
-      game_soon_desc: 'Новая мини-игра в разработке',
+      game_soon_desc: 'Новые режимы в разработке',
       game_soon_msg: 'Новая игра появится в следующем обновлении!',
       rocket_ready: 'Сделайте ставку и запустите ракету',
       bet_lbl: 'Ставка (G):',
       autocash_lbl: 'Авто-стоп (x):',
       rocket_start: '🔥 ЗАПУСТИТЬ РАКЕТКУ',
       bonuses_title: '🎁 Ежедневные и стартовые бонусы',
-      daily_title: 'Ежедневный бонус',
-      daily_desc: 'Забирай бесплатную голду каждые 24 часа',
+      daily_title: 'Бонус каждые 24 часа',
+      daily_desc: 'Забирай бесплатную голду раз в сутки',
       claim_btn: 'Забрать',
-      sub_title: 'Подписка на канал',
-      sub_desc: 'Подпишись на наш Telegram-канал и получи награду',
+      sub_title: 'Подписка на @monl1sgold',
+      sub_desc: 'Подпишись на канал t.me/monl1sgold и забери награду',
       go_channel_btn: 'Перейти',
       check_sub_btn: 'Проверить',
       ref_title: '👥 Реферальная программа',
-      ref_desc: 'Приглашай друзей по своей персональной ссылке! За каждого нового игрока, который запустит бота по твоей ссылке, ты мгновенно получаешь <b>15 G</b> на баланс.',
-      ref_invited_lbl: 'Приглашено друзей',
-      ref_earned_lbl: 'Заработано с рефералов',
+      ref_desc: 'Приглашай друзей по своей ссылке! За каждого нового реферала начисляем <b>+15 G</b> на баланс.',
+      ref_invited_lbl: 'Рефералов',
+      ref_earned_lbl: 'Получено за друзей',
       copy_ref_btn: '🔗 Скопировать реферальную ссылку',
-      wd_title: '📤 Вывод голды в Standoff 2',
-      wd_amount_lbl: 'Сколько вывести с баланса (мин. 100 G):',
+      wd_title: '📤 Вывод в Standoff 2',
+      wd_amount_lbl: 'Сумма вывода с баланса (мин. 100 G):',
       wd_skin_price_lbl: 'Выставить скин на рынке за:',
-      wd_fee_note: 'Комиссия рынка 20% уже включена, а уникальные копейки помогут быстро найти именно ваш скин.',
+      wd_fee_note: 'Комиссия рынка 20% учтена, а уникальные копейки помогают найти ваш скин на рынке.',
       wd_skin_name_lbl: 'Название вашего скина на рынке:',
       wd_skin_photo_lbl: 'Скриншот выставленного скина на рынке:',
-      wd_btn: '💎 Заказать вывод в Standoff 2',
-      history_title: '📜 История заявок (вход и вывод)',
+      wd_btn: '💎 Вывести в Standoff 2',
+      history_title: '📜 История заявок',
       nav_home: 'Главная',
       nav_dep: 'Пополнить',
       nav_games: 'Игры',
@@ -923,109 +1059,119 @@
     },
     uk: {
       balance_lbl: 'Баланс',
-      hero_title: 'Ласкаво просимо в Monl1s Store!',
-      hero_desc: 'Купуй голду за вигідним курсом, забирай щоденні бонуси, примножуй баланс в іграх та виводь голду прямо в Standoff 2.',
+      hero_title: 'Ласкаво просимо в Monl1sGold.Store!',
+      hero_desc: 'Поповнюй баланс від 100 G за курсом 100 G = 35 грн, забирай бонуси, грай у Ракетку та виводь голду в Standoff 2.',
       btn_go_deposit: '💳 Поповнити G',
-      btn_go_games: '🎮 Грати в Ракетку',
+      btn_go_games: '🎮 Розділ Ігри',
       stat_bal: 'На балансі',
       stat_dep: 'Поповнено',
       stat_refs: 'Рефералів',
+      widgets_title: '📊 Швидкі показники',
+      w_rate: 'Поточний курс',
+      w_limits: 'Вхід / Вивід',
+      w_daily: 'Щоденний бонус',
+      w_ref: 'Канал і реферали',
       how_title: '⚡ Як усе працює',
-      how_steps: '1. Поповни баланс через зручну картку (Mono, А-Банк або ПриватБанк) від <b>100 G</b>.<br>2. Після перевірки чека голда зараховується на твій баланс в апці.<br>3. Забирай бонуси або примножуй голду в розділі <b>«Ігри»</b>.<br>4. Виводь від <b>100 G</b> у Standoff 2 — ми покриваємо комісію ринку 20%!',
+      how_steps: '1. Поповни баланс через карту (Mono, А-Банк або ПриватБанк) від <b>100 G</b>.<br>2. Голда зараховується на баланс в апці після перевірки заявки.<br>3. Забирай бонуси у розділі <b>«Бонуси»</b> та грай в <b>«Ігри»</b>.<br>4. Виводь від <b>100 G</b> у Standoff 2 через розділ <b>«Вивід»</b>.',
       dep_title: '💳 Поповнення балансу',
       min_100: 'Мін. 100 G',
       dep_amount_lbl: 'Кількість голди для поповнення (мін. 100 G):',
       to_pay_lbl: 'Сума до переказу:',
       credit_to_lbl: 'Зарахування:',
-      to_app_bal: 'На баланс додатку',
+      to_app_bal: 'Лише на баланс в апці',
       choose_bank_lbl: 'Оберіть банк для переказу:',
       receipt_lbl: 'Скріншот квитанції про оплату:',
       dep_btn: '✅ Я оплатив, надіслати заявку',
       game_rocket_name: 'Ракетка',
       game_rocket_desc: 'Множник до x30.00',
       game_soon_name: 'Скоро...',
-      game_soon_desc: 'Нова міні-гра в розробці',
+      game_soon_desc: 'Нові режими в розробці',
       game_soon_msg: 'Нова гра з’явиться в наступному оновленні!',
       rocket_ready: 'Зробіть ставку та запустіть ракету',
       bet_lbl: 'Ставка (G):',
       autocash_lbl: 'Авто-стоп (x):',
       rocket_start: '🔥 ЗАПУСТИТИ РАКЕТКУ',
       bonuses_title: '🎁 Щоденні та стартові бонуси',
-      daily_title: 'Щоденний бонус',
-      daily_desc: 'Забирай безкоштовну голду кожні 24 години',
+      daily_title: 'Бонус кожні 24 години',
+      daily_desc: 'Забирай безкоштовну голду раз на добу',
       claim_btn: 'Забрати',
-      sub_title: 'Підписка на канал',
-      sub_desc: 'Підпишись на наш Telegram-канал та отримай нагороду',
+      sub_title: 'Підписка на @monl1sgold',
+      sub_desc: 'Підпишись на канал t.me/monl1sgold та забери нагороду',
       go_channel_btn: 'Перейти',
       check_sub_btn: 'Перевірити',
       ref_title: '👥 Реферальна програма',
-      ref_desc: 'Запрошуй друзів за своїм персональним посиланням! За кожного нового гравця, який запустить бота за твоїм посиланням, ти миттєво отримуєш <b>15 G</b> на баланс.',
-      ref_invited_lbl: 'Запрошено друзів',
-      ref_earned_lbl: 'Зароблено з рефералів',
+      ref_desc: 'Запрошуй друзів за своїм посиланням! За кожного нового реферала нараховуємо <b>+15 G</b> на баланс.',
+      ref_invited_lbl: 'Рефералів',
+      ref_earned_lbl: 'Отримано за друзів',
       copy_ref_btn: '🔗 Скопіювати реферальне посилання',
-      wd_title: '📤 Вивід голди в Standoff 2',
-      wd_amount_lbl: 'Скільки вивести з балансу (мін. 100 G):',
+      wd_title: '📤 Вивід у Standoff 2',
+      wd_amount_lbl: 'Сума виводу з балансу (мін. 100 G):',
       wd_skin_price_lbl: 'Виставити скін на ринку за:',
-      wd_fee_note: 'Комісія ринку 20% вже врахована, а унікальні копійки допоможуть швидко знайти саме ваш скін.',
+      wd_fee_note: 'Комісія ринку 20% врахована, а унікальні копійки допомагають знайти ваш скін на ринку.',
       wd_skin_name_lbl: 'Назва вашого скіна на ринку:',
       wd_skin_photo_lbl: 'Скріншот виставленого скіна на ринку:',
-      wd_btn: '💎 Замовити вивід у Standoff 2',
-      history_title: '📜 Історія заявок (вхід та вивід)',
+      wd_btn: '💎 Вивести в Standoff 2',
+      history_title: '📜 Історія заявок',
       nav_home: 'Головна',
       nav_dep: 'Поповнити',
       nav_games: 'Ігри',
-      nav_bonus: 'Бонуси',
+      nav_bonus: 'Бонусы',
       nav_wd: 'Вивід'
     },
     en: {
       balance_lbl: 'Balance',
-      hero_title: 'Welcome to Monl1s Store!',
-      hero_desc: 'Buy Standoff 2 gold at the best rate, claim daily bonuses, multiply your balance in games and withdraw directly to Standoff 2.',
+      hero_title: 'Welcome to Monl1sGold.Store!',
+      hero_desc: 'Top up from 100 G at 100 G = 35 UAH, claim bonuses, play Rocket and withdraw gold to Standoff 2.',
       btn_go_deposit: '💳 Top Up G',
-      btn_go_games: '🎮 Play Rocket',
+      btn_go_games: '🎮 Games Hub',
       stat_bal: 'Balance',
       stat_dep: 'Deposited',
       stat_refs: 'Referrals',
+      widgets_title: '📊 Quick Stats',
+      w_rate: 'Rate',
+      w_limits: 'Min In / Out',
+      w_daily: 'Daily Bonus',
+      w_ref: 'Channel & Refs',
       how_title: '⚡ How it works',
-      how_steps: '1. Top up your balance via card (Mono, A-Bank or PrivatBank) from <b>100 G</b>.<br>2. Once verified, gold is credited to your app balance.<br>3. Claim bonuses or multiply gold in <b>Games</b>.<br>4. Withdraw from <b>100 G</b> to Standoff 2 — we cover the 20% market fee!',
+      how_steps: '1. Top up via card (Mono, A-Bank or PrivatBank) from <b>100 G</b>.<br>2. Gold is credited to your app balance after review.<br>3. Claim bonuses in <b>Bonuses</b> and play in <b>Games</b>.<br>4. Withdraw from <b>100 G</b> to Standoff 2 in <b>Withdraw</b>.',
       dep_title: '💳 Balance Top Up',
       min_100: 'Min. 100 G',
-      dep_amount_lbl: 'Gold amount to deposit (min. 100 G):',
+      dep_amount_lbl: 'Gold amount to top up (min. 100 G):',
       to_pay_lbl: 'Amount to pay:',
-      credit_to_lbl: 'Destination:',
-      to_app_bal: 'App balance',
-      choose_bank_lbl: 'Select bank for transfer:',
+      credit_to_lbl: 'Credited to:',
+      to_app_bal: 'App balance only',
+      choose_bank_lbl: 'Choose bank card:',
       receipt_lbl: 'Payment receipt screenshot:',
       dep_btn: '✅ Paid, submit request',
       game_rocket_name: 'Rocket',
       game_rocket_desc: 'Multiplier up to x30.00',
       game_soon_name: 'Soon...',
-      game_soon_desc: 'New mini-game in progress',
-      game_soon_msg: 'A new game will arrive in the next update!',
-      rocket_ready: 'Place your bet and launch the rocket',
+      game_soon_desc: 'More games coming soon',
+      game_soon_msg: 'A new game is coming in the next update!',
+      rocket_ready: 'Place a bet and launch the rocket',
       bet_lbl: 'Bet (G):',
-      autocash_lbl: 'Auto-cashout (x):',
+      autocash_lbl: 'Auto-stop (x):',
       rocket_start: '🔥 LAUNCH ROCKET',
       bonuses_title: '🎁 Daily & Starter Bonuses',
-      daily_title: 'Daily Bonus',
-      daily_desc: 'Claim free gold every 24 hours',
+      daily_title: 'Bonus every 24 hours',
+      daily_desc: 'Claim free gold once every 24 hours',
       claim_btn: 'Claim',
-      sub_title: 'Channel Subscription',
-      sub_desc: 'Subscribe to our Telegram channel and get a reward',
+      sub_title: 'Subscribe @monl1sgold',
+      sub_desc: 'Join t.me/monl1sgold channel and get your reward',
       go_channel_btn: 'Open',
       check_sub_btn: 'Verify',
       ref_title: '👥 Referral Program',
-      ref_desc: 'Invite friends using your personal link! For every new player who starts the bot via your link, you instantly get <b>15 G</b>.',
-      ref_invited_lbl: 'Invited friends',
-      ref_earned_lbl: 'Referral earnings',
+      ref_desc: 'Invite friends with your link! Get <b>+15 G</b> for each new referral.',
+      ref_invited_lbl: 'Referrals',
+      ref_earned_lbl: 'Earned from refs',
       copy_ref_btn: '🔗 Copy referral link',
-      wd_title: '📤 Withdraw Gold to Standoff 2',
+      wd_title: '📤 Withdraw to Standoff 2',
       wd_amount_lbl: 'Amount to withdraw (min. 100 G):',
       wd_skin_price_lbl: 'List your skin on market for:',
-      wd_fee_note: 'The 20% market fee is covered, and unique cents help us find your exact skin listing.',
+      wd_fee_note: '20% market fee is covered, and unique cents help locate your skin listing.',
       wd_skin_name_lbl: 'Your skin name on market:',
       wd_skin_photo_lbl: 'Screenshot of listed skin:',
-      wd_btn: '💎 Request Standoff 2 Withdrawal',
+      wd_btn: '💎 Withdraw to Standoff 2',
       history_title: '📜 Requests History',
       nav_home: 'Home',
       nav_dep: 'Top Up',
@@ -1034,6 +1180,7 @@
       nav_wd: 'Withdraw'
     }
   };
+  I18N.uk.nav_bonus = 'Бонуси';
 
   let curLang = 'ru';
   function t(key) { return (I18N[curLang] && I18N[curLang][key]) || I18N.ru[key] || key; }
@@ -1044,18 +1191,21 @@
     btn.classList.add('active');
     document.querySelectorAll('[data-i18n]').forEach((el) => {
       const k = el.getAttribute('data-i18n');
-      if (I18N[lang][k]) el.innerHTML = I18N[lang][k];
+      if (I18N[lang] && I18N[lang][k]) el.innerHTML = I18N[lang][k];
     });
   }
 
   const tgUser = tg?.initDataUnsafe?.user || { id: 5224967757, username: 'yternaft', first_name: 'Illia' };
   let userState = { goldBalance: 0, totalDeposited: 0, referralsCount: 0, referralEarned: 0, lastDailyClaim: 0, channelClaimed: false };
-  let appConfig = { botUsername: 'so2_gold_market_bot', channelUrl: 'https://t.me/monlis_gold_channel', ratePer100: 35, minDeposit: 100, minWithdraw: 100 };
   let selectedBank = 'Mono';
   const uniqueCents = Math.floor(11 + Math.random() * 88) / 100;
 
+  // Заставка з анімованою шкалою завантаження
   window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('splash').classList.add('hide'), 500);
+    const bar = document.getElementById('splash-bar');
+    setTimeout(() => { bar.style.width = '65%'; }, 80);
+    setTimeout(() => { bar.style.width = '100%'; }, 320);
+    setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 650);
   });
 
   // Фізика фонових частинок
@@ -1070,7 +1220,7 @@
   window.addEventListener('resize', resizeBg);
   resizeBg();
 
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 42; i++) {
     bgParticles.push({
       x: Math.random() * bgCanvas.width,
       y: Math.random() * bgCanvas.height,
@@ -1124,18 +1274,16 @@
     document.getElementById('stat-refs').textContent = `${userState.referralsCount || 0}`;
     document.getElementById('ref-count-box').textContent = `${userState.referralsCount || 0}`;
     document.getElementById('ref-earned-box').textContent = `${Number(userState.referralEarned || 0)} G`;
-
-    const refLink = `https://t.me/${appConfig.botUsername}?start=ref_${tgUser.id}`;
-    document.getElementById('ref-link-text').textContent = refLink;
+    document.getElementById('ref-link-text').textContent = `https://t.me/${BOT_NICK}?start=ref_${tgUser.id}`;
 
     const subBtn = document.getElementById('sub-btn');
     if (userState.channelClaimed) {
-      subBtn.textContent = '✅ Получено';
+      subBtn.textContent = '✅ +15 G';
       subBtn.disabled = true;
     }
   }
 
-  // Таймер для бонусу 24 години
+  // Таймер щоденного бонусу 24 години
   setInterval(() => {
     const btn = document.getElementById('daily-btn');
     const cooldown = 24 * 60 * 60 * 1000;
@@ -1208,7 +1356,7 @@
       document.getElementById('dep-receipt').value = '';
       await loadUserData();
     } catch {
-      notify('Ошибка соединения с сервером');
+      notify('Нет связи с сервером. Проверьте запущен ли бот/сервер.');
     } finally {
       btn.disabled = false;
     }
@@ -1216,6 +1364,8 @@
 
   // Бонуси
   async function claimDaily() {
+    const btn = document.getElementById('daily-btn');
+    btn.disabled = true;
     try {
       const res = await fetch(`${API_URL}/api/bonus/daily`, {
         method: 'POST',
@@ -1223,23 +1373,28 @@
         body: JSON.stringify({ userId: tgUser.id })
       });
       const data = await res.json();
-      if (!data.success) return notify('Бонус будет доступен через 24 часа');
+      if (!data.success) {
+        btn.disabled = false;
+        return notify(data.error === 'cooldown' ? 'Бонус будет доступен через 24 часа' : (data.error || 'Не удалось получить бонус'));
+      }
       userState.goldBalance = data.balance;
       userState.lastDailyClaim = data.lastDailyClaim;
       updateUI();
-      notify('🎉 Вы получили +5 G!');
+      notify('🎉 Начислено +5 G!');
     } catch {
-      notify('Ошибка сервера');
+      btn.disabled = false;
+      notify('Сервер не отвечает. Убедитесь, что бекенд запущен и доступен.');
     }
   }
 
   function openChannel() {
-    const url = appConfig.channelUrl || 'https://t.me/monlis_gold_channel';
-    if (tg?.openTelegramLink) tg.openTelegramLink(url);
-    else window.open(url, '_blank');
+    if (tg?.openTelegramLink) tg.openTelegramLink(CHANNEL_LINK);
+    else window.open(CHANNEL_LINK, '_blank');
   }
 
   async function claimChannel() {
+    const btn = document.getElementById('sub-btn');
+    btn.disabled = true;
     try {
       const res = await fetch(`${API_URL}/api/bonus/channel`, {
         method: 'POST',
@@ -1247,13 +1402,17 @@
         body: JSON.stringify({ userId: tgUser.id })
       });
       const data = await res.json();
-      if (!data.success) return notify('Вы еще не подписались на канал!');
+      if (!data.success) {
+        btn.disabled = false;
+        return notify('Подпишитесь на @monl1sgold и убедитесь, что бот добавлен в админы канала');
+      }
       userState.goldBalance = data.balance;
       userState.channelClaimed = true;
       updateUI();
-      notify('🎉 Награда +15 G зачислена!');
+      notify('🎉 Начислено +15 G за подписку на @monl1sgold!');
     } catch {
-      notify('Ошибка проверки подписки');
+      btn.disabled = false;
+      notify('Сервер не отвечает. Проверьте подключение к бекенду.');
     }
   }
 
@@ -1298,18 +1457,18 @@
       if (!data.success) return notify(data.error || 'Ошибка вывода');
       userState.goldBalance = data.balance;
       updateUI();
-      notify(`Заявка на вывод #${data.order.orderId} принята!`);
+      notify(`Заявка на вывод #${data.order.orderId} отправлена!`);
       document.getElementById('wd-skin-name').value = '';
       document.getElementById('wd-skin-photo').value = '';
       await loadUserData();
     } catch {
-      notify('Ошибка соединения с сервером');
+      notify('Нет связи с сервером');
     } finally {
       btn.disabled = false;
     }
   }
 
-  // === ГРА РАКЕТКА З ФІЗИКОЮ ===
+  // === ГРА РАКЕТКА ===
   const rCanvas = document.getElementById('rocket-canvas');
   const rCtx = rCanvas.getContext('2d');
   let rocketPhase = 'idle';
@@ -1387,7 +1546,7 @@
         btn.className = 'btn btn-green';
         btn.textContent = `💰 ЗАБРАТЬ (${bet.toFixed(2)} G)`;
       } catch {
-        notify('Сервер недоступний');
+        notify('Нет связи с сервером');
       }
       return;
     }
@@ -1425,7 +1584,6 @@
   function renderRocket() {
     rCtx.clearRect(0, 0, rCanvas.width, rCanvas.height);
 
-    // Сітка висоти на фоні арени
     rCtx.strokeStyle = 'rgba(255,255,255,0.04)';
     rCtx.lineWidth = 1;
     for (let y = 40; y < rCanvas.height; y += 45) {
@@ -1443,7 +1601,6 @@
       mEl.textContent = `${curMult.toFixed(2)}x`;
       document.getElementById('rocket-btn').textContent = `💰 ЗАБРАТЬ (${(activeBet * curMult).toFixed(2)} G)`;
 
-      // Перевірка авто-стопу
       const autoTarget = Number(document.getElementById('rocket-auto').value);
       if (!autoCashed && autoTarget >= 1.1 && curMult >= autoTarget && curMult < crashAt) {
         autoCashed = true;
@@ -1454,7 +1611,6 @@
       const rx = 42 + p * (rCanvas.width - 95);
       const ry = rCanvas.height - 44 - Math.pow(p, 0.8) * (rCanvas.height - 95) + Math.sin(flyTime * 10) * 3;
 
-      // Крива траєкторії
       rCtx.beginPath();
       rCtx.moveTo(20, rCanvas.height - 25);
       rCtx.quadraticCurveTo(rx * 0.55, rCanvas.height - 32, rx, ry);
@@ -1462,7 +1618,6 @@
       rCtx.lineWidth = 3;
       rCtx.stroke();
 
-      // Іскри з сопла
       for (let i = 0; i < 4; i++) {
         rocketFx.push({
           x: rx - 12, y: ry + 8,
@@ -1524,13 +1679,11 @@
   }
   renderRocket();
 
-  // Завантаження даних та історії
   async function loadUserData() {
     try {
       const res = await fetch(`${API_URL}/api/user/${tgUser.id}`);
       const data = await res.json();
       if (data.user) userState = data.user;
-      if (data.config) appConfig = data.config;
       updateUI();
 
       const list = document.getElementById('orders-list');
